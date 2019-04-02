@@ -4,10 +4,8 @@ import static math.LinAlg.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.PriorityQueue;
 
 
 public class Painter extends JPanel {
@@ -22,9 +20,13 @@ public class Painter extends JPanel {
     private Matrix cameraMatrix;
     private Matrix cameraPos;
 
-    public int getWidth() { return super.getWidth(); }
+    public int getWidth() {
+        return super.getWidth();
+    }
 
-    public int getHeight() { return super.getHeight(); }
+    public int getHeight() {
+        return super.getHeight();
+    }
 
     private void drawConic(Matrix conic, Graphics2D g) {
         double A = conic.get(0, 0);
@@ -95,8 +97,14 @@ public class Painter extends JPanel {
         drawConic(conic, g);
     }
 
-    private void drawLine(Graphics2D g, Matrix p1, Matrix p2) {
+    private void drawLine(Graphics2D g, LineSeg ls) {
+        Matrix p1 = Matrix.mult(ls.pnt1, cameraMatrix);
+        Matrix p2 = Matrix.mult(ls.pnt2, cameraMatrix);
         LineSeg vis = getVisibleSeg(p1, p2);
+
+        int brightness = (int) Math.min(255, BRIGHTNESS / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
+        g.setColor(new Color(brightness, brightness, brightness));
+
         if (vis.pnt1 == null) return;
         p1 = toScreen(vis.pnt1);
         p2 = toScreen(vis.pnt2);
@@ -129,24 +137,27 @@ public class Painter extends JPanel {
     }
 
     void drawGrid(Graphics2D g) {
+        List<LineSeg> list = new ArrayList<LineSeg>();
         for (double i = -SimulationManager.GRID_SIZE; i <= SimulationManager.GRID_SIZE; i += GRID_STEP) {
             for (double j = -SimulationManager.GRID_SIZE; j <= SimulationManager.GRID_SIZE; j += GRID_STEP) {
                 Matrix centerPos = new Matrix(new double[][]{{i, j, 0}});
-                centerPos = Matrix.mult(centerPos, cameraMatrix);
-                loop: for (int k = 0; k < 4; k++) {
+                loop:
+                for (int k = 0; k < 4; k++) {
                     Matrix newp = new Matrix(new double[][]{{i + DX[k] * GRID_STEP, j + DY[k] * GRID_STEP, 0}});
-                    for (int dim = 0; dim < 3; dim++) if (Math.abs(newp.get(0, dim)) > SimulationManager.GRID_SIZE) continue loop;
-                    newp = Matrix.mult(newp, cameraMatrix);
-                    int brightness = (int) Math.min(255, BRIGHTNESS / squareDis(centerPos, cameraPos));
-                    if (i == 0 && j == 0 || (newp.get(0, 0) == 0 && newp.get(0, 1) == 0))
-                        g.setColor(new Color(255, 0, 0, brightness));
-                    else
-                        g.setColor(new Color(255, 255, 255, brightness));
+                    for (int dim = 0; dim < 3; dim++)
+                        if (Math.abs(newp.get(0, dim)) > SimulationManager.GRID_SIZE) continue loop;
 
-                    drawLine(g, centerPos, newp);
+                    list.add(new LineSeg(centerPos, newp));
                 }
             }
         }
+        list.sort(new Comparator<LineSeg>() {
+            @Override
+            public int compare(LineSeg l1, LineSeg l2) {
+                return (int) Math.signum(getDis(Camera.getPos(), l2.pnt1) - getDis(Camera.getPos(), l1.pnt1));
+            }
+        });
+        for (LineSeg ls : list) drawLine(g, ls);
     }
 
     private Matrix screenScale(Matrix proj) {
