@@ -1,4 +1,3 @@
-import javafx.geometry.Side;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
@@ -7,14 +6,8 @@ import objects.Positionable;
 
 import static math.LinAlg.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
