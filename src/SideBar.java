@@ -12,7 +12,7 @@ public class SideBar {
 
     public static boolean showingTab = false;
     public static boolean showingBar = false;
-    public static int tabOpacity = 0;
+    public static int tabProtrusion = 0;
 
     private static Timer t;
 
@@ -25,9 +25,9 @@ public class SideBar {
                 else if (!showingBar)
                     width = Math.max(0, width - 25);
                 if (showingTab)
-                    tabOpacity = Math.min(255, tabOpacity + 50);
+                    tabProtrusion = Math.min(TAB_RADIUS, tabProtrusion + 10);
                 else
-                    tabOpacity = Math.max(0, tabOpacity - 50);
+                    tabProtrusion = Math.max(0, tabProtrusion - 10);
             }
         });
         t.start();

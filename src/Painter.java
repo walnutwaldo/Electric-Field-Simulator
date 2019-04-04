@@ -184,29 +184,35 @@ public class Painter extends JPanel {
         return screenScale(proj);
     }
 
-    private void drawSideBar(Graphics2D g) {
-        g.setColor(new Color(128, 128, 128, SideBar.tabOpacity));
-        g.translate(getWidth(), getHeight() / 2);
+    private void drawTab(Graphics2D g) {
+        g.setColor(Color.GRAY);
+        g.translate(getWidth() + SideBar.TAB_RADIUS - SideBar.tabProtrusion, getHeight() / 2);
         g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
-        g.setColor(new Color(255, 255, 255, SideBar.tabOpacity));
         g.setStroke(new BasicStroke(5));
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, SideBar.tabOpacity / 255.0f));
+        g.setColor(Color.WHITE);
         if (SideBar.showingBar) {
-            g.setClip(- 2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
+            g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
             g.rotate(Math.PI / 4, 0, 0);
-            int shift = (int)(Math.sqrt(0.5) * (5 + SideBar.TAB_RADIUS / 6));
+            int shift = (int) (Math.sqrt(0.5) * (5 + SideBar.TAB_RADIUS / 6));
             g.drawRect(-100 - shift, shift, 100, 100);
             g.rotate(-Math.PI / 4, 0, 0);
             g.setClip(0, 0, getWidth(), getHeight());
         } else {
-            g.setClip(- 2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
-            g.rotate(Math.PI / 4, - 2 * SideBar.TAB_RADIUS / 3, 0);
-            int shift = (int)(Math.sqrt(0.5) * 5);
-            g.drawRect(- 2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
-            g.rotate(-Math.PI / 4, 0, 0);
+            g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
+            g.rotate(Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
+            int shift = (int) (Math.sqrt(0.5) * 5);
+            g.drawRect(-2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
+            g.rotate(-Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
             g.setClip(0, 0, getWidth(), getHeight());
         }
-        g.translate(-getWidth(), -getHeight() / 2);
+        g.translate(-getWidth() - SideBar.TAB_RADIUS + SideBar.tabProtrusion, -getHeight() / 2);
+    }
+
+    private void drawSideBar(Graphics2D g) {
+        drawTab(g);
+        g.setClip(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
+        g.setColor(Color.GRAY);
+        g.fillRect(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
     }
 
     public void paintComponent(Graphics _g) {

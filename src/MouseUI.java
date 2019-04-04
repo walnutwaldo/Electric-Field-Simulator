@@ -27,7 +27,9 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         lastX = e.getX();
         lastY = e.getY();
         int screenWidth = WindowManager.painter.getWidth();
-        if (lastX >= screenWidth - 5)
+        int screenHeight = WindowManager.painter.getHeight();
+        if (lastX >= screenWidth - 5
+                || Math.pow(lastX - screenWidth, 2) + Math.pow(lastY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2))
             SideBar.showTab();
         else if (lastX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
     }
