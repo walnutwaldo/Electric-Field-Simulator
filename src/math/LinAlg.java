@@ -1,5 +1,7 @@
 package math;
 
+import objects.Positionable;
+
 public class LinAlg {
 
     public static final double EPSILON = 0.000001;
@@ -78,7 +80,7 @@ public class LinAlg {
         }
     }
 
-    public static class LineSeg {
+    public static class LineSeg implements Positionable {
         public Matrix pnt1, pnt2;
 
         public LineSeg(Matrix _p1, Matrix _p2) {
@@ -88,6 +90,10 @@ public class LinAlg {
 
         public Line getLine() {
             return new Line(pnt1, pnt2);
+        }
+
+        public double getDisTo(Matrix m) {
+            return Math.max(Matrix.subtract(m, pnt1).length(), Matrix.subtract(m, pnt2).length());
         }
     }
 
@@ -106,7 +112,8 @@ public class LinAlg {
         Matrix m = linSystem.clone();
         for (int i = 0; i < m.numRows(); i++) {
             int firstCol;
-            for (firstCol = 0; firstCol < m.numRows() && approx(m.get(i, firstCol), 0); firstCol++) m.set(i, firstCol, 0);
+            for (firstCol = 0; firstCol < m.numRows() && approx(m.get(i, firstCol), 0); firstCol++)
+                m.set(i, firstCol, 0);
             if (firstCol == m.numRows() && !approx(m.get(i, m.numRows()), 0))
                 return null;
             if (firstCol < m.numRows()) for (int j = 0; j < m.numRows(); j++)

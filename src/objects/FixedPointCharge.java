@@ -1,6 +1,8 @@
+package objects;
+
 import math.Matrix;
 
-public class FixedPointCharge {
+public class FixedPointCharge implements Positionable {
 
     public static final double RADIUS = 1;
 
@@ -41,6 +43,10 @@ public class FixedPointCharge {
 
     public Matrix getPos() {
         return pos.clone();
+    }
+
+    public double getDisTo(Matrix m) {
+        return Matrix.subtract(m, pos).length() - FixedPointCharge.RADIUS;
     }
 
     public int getCharge() {

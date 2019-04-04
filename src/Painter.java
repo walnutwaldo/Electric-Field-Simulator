@@ -1,9 +1,20 @@
+import javafx.geometry.Side;
 import math.Matrix;
+import objects.Camera;
+import objects.FixedPointCharge;
+import objects.MovingCharge;
+import objects.Positionable;
 
 import static math.LinAlg.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -16,12 +27,26 @@ public class Painter extends JPanel {
     private static final double GRID_STEP = 5;
     private static final double BRIGHTNESS = 500000;
 
-    private static double maxDim;
+    private Camera camera;
+
+    private double maxDim;
     private Matrix cameraMatrix;
     private Matrix cameraPos;
 
+    private PriorityQueue<Positionable> pq = new PriorityQueue<Positionable>(new Comparator<Positionable>() {
+
+        public int compare(Positionable o1, Positionable o2) {
+            return (int) Math.signum(o2.getDisTo(camera.getPos()) - o1.getDisTo(camera.getPos()));
+        }
+    });
+
+    public Painter(Camera _camera) {
+        super();
+        camera = _camera;
+    }
+
     public int getWidth() {
-        return super.getWidth();
+        return super.getWidth() - SideBar.width;
     }
 
     public int getHeight() {
@@ -49,8 +74,8 @@ public class Painter extends JPanel {
         double k = -E2 / (2 * C2);
         g.rotate(-theta, getWidth() / 2, getHeight() / 2);
 
-        g.fillOval((int) (getWidth() / 2 + (h - a) * maxDim / 2), (int) (getHeight() / 2 - (k + b) * maxDim / 2),
-                (int) (a * maxDim), (int) (b * maxDim));
+        g.fillOval((int) Math.round(getWidth() / 2 + (h - a) * maxDim / 2), (int) Math.round(getHeight() / 2 - (k + b) * maxDim / 2),
+                (int) Math.round(a * maxDim), (int) Math.round(b * maxDim));
         g.rotate(theta, getWidth() / 2, getHeight() / 2);
     }
 
@@ -108,7 +133,8 @@ public class Painter extends JPanel {
         if (vis.pnt1 == null) return;
         p1 = toScreen(vis.pnt1);
         p2 = toScreen(vis.pnt2);
-        g.drawLine((int) p1.get(0, 0), (int) p1.get(0, 1), (int) p2.get(0, 0), (int) p2.get(0, 1));
+        g.drawLine((int) Math.round(p1.get(0, 0)), (int) Math.round(p1.get(0, 1)),
+                (int) Math.round(p2.get(0, 0)), (int) Math.round(p2.get(0, 1)));
     }
 
     private boolean visible(Matrix point) {
@@ -147,23 +173,16 @@ public class Painter extends JPanel {
                     for (int dim = 0; dim < 3; dim++)
                         if (Math.abs(newp.get(0, dim)) > SimulationManager.GRID_SIZE) continue loop;
 
-                    list.add(new LineSeg(centerPos, newp));
+                    pq.add(new LineSeg(centerPos, newp));
                 }
             }
         }
-        list.sort(new Comparator<LineSeg>() {
-            @Override
-            public int compare(LineSeg l1, LineSeg l2) {
-                return (int) Math.signum(getDis(Camera.getPos(), l2.pnt1) - getDis(Camera.getPos(), l1.pnt1));
-            }
-        });
-        for (LineSeg ls : list) drawLine(g, ls);
     }
 
     private Matrix screenScale(Matrix proj) {
         Matrix res = new Matrix(1, 2);
-        res.set(0, 0, getWidth() / 2 + proj.get(0, 0) * maxDim / 2);
-        res.set(0, 1, getHeight() / 2 - proj.get(0, 1) * maxDim / 2);
+        res.set(0, 0, (double) getWidth() / 2 + proj.get(0, 0) * maxDim / 2);
+        res.set(0, 1, (double) getHeight() / 2 - proj.get(0, 1) * maxDim / 2);
         return res;
     }
 
@@ -172,10 +191,36 @@ public class Painter extends JPanel {
         return screenScale(proj);
     }
 
+    private void drawSideBar(Graphics2D g) {
+        g.setColor(new Color(128, 128, 128, SideBar.tabOpacity));
+        g.translate(getWidth(), getHeight() / 2);
+        g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
+        g.setColor(new Color(255, 255, 255, SideBar.tabOpacity));
+        g.setStroke(new BasicStroke(5));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, SideBar.tabOpacity / 255.0f));
+        if (SideBar.showingBar) {
+            g.setClip(- 2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
+            g.rotate(Math.PI / 4, 0, 0);
+            int shift = (int)(Math.sqrt(0.5) * (5 + SideBar.TAB_RADIUS / 6));
+            g.drawRect(-100 - shift, shift, 100, 100);
+            g.rotate(-Math.PI / 4, 0, 0);
+            g.setClip(0, 0, getWidth(), getHeight());
+        } else {
+            g.setClip(- 2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
+            g.rotate(Math.PI / 4, - 2 * SideBar.TAB_RADIUS / 3, 0);
+            int shift = (int)(Math.sqrt(0.5) * 5);
+            g.drawRect(- 2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
+            g.rotate(-Math.PI / 4, 0, 0);
+            g.setClip(0, 0, getWidth(), getHeight());
+        }
+        g.translate(-getWidth(), -getHeight() / 2);
+    }
+
     public void paintComponent(Graphics _g) {
         Graphics2D g = (Graphics2D) _g;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, getWidth(), getHeight());
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -184,16 +229,6 @@ public class Painter extends JPanel {
         maxDim = Math.max(getWidth(), getHeight());
         drawGrid(g);
         g.setColor(Color.WHITE);
-        PriorityQueue<Object> pq = new PriorityQueue<Object>(new Comparator<Object>() {
-            public int compare(Object o1, Object o2) {
-                Matrix p1 = null, p2 = null;
-                if (o1 instanceof MovingCharge) p1 = ((MovingCharge) o1).getPos();
-                else if (o1 instanceof FixedPointCharge) p1 = ((FixedPointCharge) o1).getPos();
-                if (o2 instanceof MovingCharge) p2 = ((MovingCharge) o2).getPos();
-                else if (o2 instanceof FixedPointCharge) p2 = ((FixedPointCharge) o2).getPos();
-                return (int) Math.signum(getDis(Camera.getPos(), p2) - getDis(Camera.getPos(), p1));
-            }
-        });
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {
@@ -202,7 +237,11 @@ public class Painter extends JPanel {
                 drawSphere(g, Matrix.mult(((FixedPointCharge) o).getPos(), cameraMatrix), FixedPointCharge.RADIUS);
             if (o instanceof MovingCharge)
                 drawSphere(g, Matrix.mult(((MovingCharge) o).getPos(), cameraMatrix), MovingCharge.RADIUS);
+            if (o instanceof LineSeg)
+                drawLine(g, (LineSeg) o);
         }
+
+        drawSideBar(g);
     }
 
 }

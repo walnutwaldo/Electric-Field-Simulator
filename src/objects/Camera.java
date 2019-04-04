@@ -1,6 +1,8 @@
+package objects;
+
 import math.Matrix;
 
-public class Camera {
+public class Camera implements Positionable {
 
     public static final double FOV = 114.0 / 180 * Math.PI;
 
@@ -47,8 +49,12 @@ public class Camera {
         setTilt(getTilt() + inc);
     }
 
-    public static Matrix getPos() {
+    public Matrix getPos() {
         return new Matrix(new double[][]{{-Math.sin(theta) * dis * Math.cos(tilt), -Math.cos(theta) * dis * Math.cos(tilt), Math.sin(tilt) * dis}});
+    }
+
+    public double getDisTo(Matrix m) {
+        return Matrix.subtract(getPos(), m).length();
     }
 
     public static Matrix getTransformationMatrix() {

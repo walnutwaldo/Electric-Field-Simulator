@@ -1,10 +1,12 @@
+package objects;
+
 import math.Matrix;
 
 import java.util.List;
 
 import static math.LinAlg.*;
 
-public class MovingCharge {
+public class MovingCharge implements Positionable {
 
     public static final double RADIUS = 0.1;
     public static final double MIN_DIS = 0.1;
@@ -42,7 +44,7 @@ public class MovingCharge {
         lastT = currT;
 
         Matrix initPos = pos;
-        while(dt > 0 && !finished) {
+        while (dt > 0 && !finished) {
             Matrix E = new Matrix(new double[][]{{0, 0, 0}});
             for (FixedPointCharge fpc : fixedCharges) {
                 Matrix a = Matrix.scale(Matrix.normalize(Matrix.subtract(pos, fpc.getPos())),
@@ -64,6 +66,10 @@ public class MovingCharge {
 
     public Matrix getPos() {
         return pos.clone();
+    }
+
+    public double getDisTo(Matrix m) {
+        return Matrix.subtract(m, pos).length() - MovingCharge.RADIUS;
     }
 
     public boolean isFinished() {

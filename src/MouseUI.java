@@ -1,3 +1,5 @@
+import objects.Camera;
+
 import java.awt.event.*;
 
 public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelListener {
@@ -11,6 +13,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (!mouseDown) return;
         int dx = e.getX() - lastX;
         int dy = e.getY() - lastY;
         lastX = e.getX();
@@ -21,19 +24,28 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        lastX = e.getX();
+        lastY = e.getY();
+        int screenWidth = WindowManager.painter.getWidth();
+        if (lastX >= screenWidth - SideBar.TAB_RADIUS)
+            SideBar.showTab();
+        else SideBar.hideTab();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mouseDown = true;
-        lastX = e.getX();
-        lastY = e.getY();
+        int screenWidth = WindowManager.painter.getWidth();
+        int screenHeight = WindowManager.painter.getHeight();
+        if (e.getX() >= screenWidth) {
+        } else if (Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2)) {
+            SideBar.toggle();
+        } else {
+            mouseDown = true;
+        }
     }
 
     @Override
@@ -53,6 +65,11 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        Camera.increaseDis(WHEEL_SENSITIVITY * e.getPreciseWheelRotation());
+        int screenWidth = WindowManager.painter.getWidth();
+        if (e.getX() >= screenWidth) {
+
+        } else {
+            Camera.increaseDis(WHEEL_SENSITIVITY * e.getPreciseWheelRotation());
+        }
     }
 }

@@ -19,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
         WindowManager.init();
         SimulationManager.init();
+        SideBar.init();
         timer = new Timer(TIMER_DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
