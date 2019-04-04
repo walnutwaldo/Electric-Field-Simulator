@@ -18,7 +18,7 @@ public class Painter extends JPanel {
     private static final int[] DY = new int[]{0, 1, 0, -1};
 
     private static final double GRID_STEP = 5;
-    private static final double BRIGHTNESS = 500000;
+    private static double brightness_coeff = 500000;
 
     private Camera camera;
 
@@ -74,7 +74,7 @@ public class Painter extends JPanel {
 
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
         if (!visible(pos)) return;
-        int brightness = (int) Math.min(255, BRIGHTNESS / squareDis(pos, cameraPos));
+        int brightness = (int) Math.min(255, brightness_coeff / squareDis(pos, cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 
         Matrix p_prime = Matrix.subtract(pos, cameraPos);
@@ -120,7 +120,7 @@ public class Painter extends JPanel {
         Matrix p2 = Matrix.mult(ls.pnt2, cameraMatrix);
         LineSeg vis = getVisibleSeg(p1, p2);
 
-        int brightness = (int) Math.min(255, BRIGHTNESS / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
+        int brightness = (int) Math.min(255, brightness_coeff / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 
         if (vis.pnt1 == null) return;
@@ -189,7 +189,8 @@ public class Painter extends JPanel {
         g.translate(getWidth() + SideBar.TAB_RADIUS - SideBar.tabProtrusion, getHeight() / 2);
         g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
         g.setStroke(new BasicStroke(5));
-        g.setColor(Color.WHITE);
+        if(WindowManager.mouseUI.onTab) g.setColor(Color.WHITE);
+        else g.setColor(new Color(200, 200, 200));
         if (SideBar.showingBar) {
             g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
             g.rotate(Math.PI / 4, 0, 0);
@@ -213,6 +214,8 @@ public class Painter extends JPanel {
         g.setClip(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
         g.setColor(Color.GRAY);
         g.fillRect(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
+        g.setColor(Color.WHITE);
+        g.fillRect(super.getWidth() - SideBar.MAX_WIDTH + 10, 10, SideBar.MAX_WIDTH - 20, 10);
     }
 
     public void paintComponent(Graphics _g) {

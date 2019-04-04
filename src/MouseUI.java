@@ -1,5 +1,6 @@
 import objects.Camera;
 
+import java.awt.*;
 import java.awt.event.*;
 
 public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelListener {
@@ -10,6 +11,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     private static final double X_SENSITIVITY = 0.01;
     private static final double Y_SENSITIVITY = 0.01;
     private static final double WHEEL_SENSITIVITY = 0.4;
+
+    public boolean onTab;
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -28,10 +31,12 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         lastY = e.getY();
         int screenWidth = WindowManager.painter.getWidth();
         int screenHeight = WindowManager.painter.getHeight();
-        if (lastX >= screenWidth - 5
-                || Math.pow(lastX - screenWidth, 2) + Math.pow(lastY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2))
+        onTab = lastX < screenWidth && Math.pow(lastX - screenWidth, 2) + Math.pow(lastY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
+        if (lastX >= screenWidth - 5 || onTab)
             SideBar.showTab();
         else if (lastX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
+        if (onTab) WindowManager.frame.setCursor(Cursor.HAND_CURSOR);
+        else WindowManager.frame.setCursor(Cursor.DEFAULT_CURSOR);
     }
 
     @Override

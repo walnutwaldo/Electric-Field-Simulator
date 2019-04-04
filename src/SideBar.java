@@ -20,10 +20,6 @@ public class SideBar {
         t = new Timer(TIMER_DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (showingBar)
-                    width = Math.min(MAX_WIDTH, width + 25);
-                else if (!showingBar)
-                    width = Math.max(0, width - 25);
                 if (showingTab)
                     tabProtrusion = Math.min(TAB_RADIUS, tabProtrusion + 10);
                 else
@@ -33,14 +29,27 @@ public class SideBar {
         t.start();
     }
 
-    public static void open() { showingBar = true; }
+    public static void open() {
+        showingBar = true;
+        width = MAX_WIDTH;
+    }
 
-    public static void close() { showingBar = false; }
+    public static void close() {
+        showingBar = false;
+        width = 0;
+    }
 
-    public static void toggle() { showingBar = !showingBar; }
+    public static void toggle() {
+        if(showingBar) close();
+        else open();
+    }
 
-    public static void showTab() { showingTab = true; }
+    public static void showTab() {
+        showingTab = true;
+    }
 
-    public static void hideTab() { showingTab = false; }
+    public static void hideTab() {
+        showingTab = false;
+    }
 
 }
