@@ -1,33 +1,15 @@
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class SideBar {
-
-    private static final int TIMER_DELAY = 5;
 
     public static final int MAX_WIDTH = 250;
     public static final int TAB_RADIUS = 30;
+    private static final double TAB_COEFF = 5;
     public static int width = 0;
 
     public static boolean showingTab = false;
     public static boolean showingBar = false;
-    public static int tabProtrusion = 0;
 
-    private static Timer t;
-
-    public static void init() {
-        t = new Timer(TIMER_DELAY, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (showingTab)
-                    tabProtrusion = Math.min(TAB_RADIUS, tabProtrusion + 10);
-                else
-                    tabProtrusion = Math.max(0, tabProtrusion - 10);
-            }
-        });
-        t.start();
-    }
+    private static long tabPressTime = 0;
+    private static int tabInit = 0;
 
     public static void open() {
         showingBar = true;
@@ -40,16 +22,31 @@ public class SideBar {
     }
 
     public static void toggle() {
-        if(showingBar) close();
+        if (showingBar) close();
         else open();
     }
 
     public static void showTab() {
-        showingTab = true;
+        if (!showingTab) {
+            showingTab = true;
+            long currT = System.currentTimeMillis();
+            tabInit = (int) Math.max(0, tabInit - (currT - tabPressTime) / TAB_COEFF);
+            tabPressTime = currT;
+        }
     }
 
     public static void hideTab() {
-        showingTab = false;
+        if (showingTab) {
+            showingTab = false;
+            long currT = System.currentTimeMillis();
+            tabInit = (int) Math.min(TAB_RADIUS, tabInit + (currT - tabPressTime) / TAB_COEFF);
+            tabPressTime = currT;
+        }
+    }
+
+    public static int getTabProtrusion() {
+        if (showingTab) return (int) Math.min(TAB_RADIUS, tabInit + (System.currentTimeMillis() - tabPressTime) / TAB_COEFF);
+        else return (int) Math.max(0, tabInit - (System.currentTimeMillis() - tabPressTime) / TAB_COEFF);
     }
 
 }
