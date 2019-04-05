@@ -1,3 +1,7 @@
+package main;
+
+import UI.SideBar;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +21,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        WindowManager.init();
+        SideBar.init();
         SimulationManager.init();
+        WindowManager.init();
         timer = new Timer(TIMER_DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

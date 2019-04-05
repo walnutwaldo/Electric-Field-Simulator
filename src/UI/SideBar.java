@@ -1,3 +1,8 @@
+package UI;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SideBar {
 
     public static final int MAX_WIDTH = 250;
@@ -10,6 +15,15 @@ public class SideBar {
 
     private static long tabPressTime = 0;
     private static int tabInit = 0;
+
+    private static List<UIComponent> uiComponents;
+    public static Slider brightnessSlider;
+
+    public static void init() {
+        uiComponents = new ArrayList<UIComponent>();
+        brightnessSlider = new Slider();
+        uiComponents.add(brightnessSlider);
+    }
 
     public static void open() {
         showingBar = true;
@@ -45,8 +59,13 @@ public class SideBar {
     }
 
     public static int getTabProtrusion() {
-        if (showingTab) return (int) Math.min(TAB_RADIUS, tabInit + (System.currentTimeMillis() - tabPressTime) / TAB_COEFF);
+        if (showingTab)
+            return (int) Math.min(TAB_RADIUS, tabInit + (System.currentTimeMillis() - tabPressTime) / TAB_COEFF);
         else return (int) Math.max(0, tabInit - (System.currentTimeMillis() - tabPressTime) / TAB_COEFF);
+    }
+
+    public static List<UIComponent> getUIComponents() {
+        return uiComponents;
     }
 
 }

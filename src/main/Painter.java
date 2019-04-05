@@ -1,3 +1,7 @@
+package main;
+
+import UI.SideBar;
+import UI.UIComponent;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
@@ -5,6 +9,7 @@ import objects.MovingCharge;
 import objects.Positionable;
 
 import static math.LinAlg.*;
+import static math.Conics.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +18,9 @@ import java.util.List;
 
 
 public class Painter extends JPanel {
+
+    private static final int MIN_BRIGHTNESS = 100000;
+    private static final int MAX_BRIGHTNESS = 1000000;
 
     private static final int[] DX = new int[]{-1, 0, 1, 0};
     private static final int[] DY = new int[]{0, 1, 0, -1};
@@ -27,7 +35,6 @@ public class Painter extends JPanel {
     private Matrix cameraPos;
 
     private PriorityQueue<Positionable> pq = new PriorityQueue<Positionable>(new Comparator<Positionable>() {
-
         public int compare(Positionable o1, Positionable o2) {
             return (int) Math.signum(o2.getDisTo(camera.getPos()) - o1.getDisTo(camera.getPos()));
         }
@@ -46,27 +53,14 @@ public class Painter extends JPanel {
         return super.getHeight();
     }
 
-    private void drawConic(Matrix conic, Graphics2D g) {
-        double A = conic.get(0, 0);
-        double B = conic.get(0, 1);
-        double C = conic.get(0, 2);
-        double D = conic.get(0, 3);
-        double E = conic.get(0, 4);
-        double theta = 0.5 * Math.atan2(B, A - C);
-        double c = Math.cos(theta), s = Math.sin(theta);
-        double A2 = A * c * c + B * s * c + C * s * s;
-        double C2 = A * s * s - B * s * c + C * c * c;
-        double D2 = D * c + E * s;
-        double E2 = -D * s + E * c;
-
-        double m = D2 * D2 / (4 * A2) + E2 * E2 / (4 * C2) - 1;
-
-        double a = Math.sqrt(m / A2);
-        double b = Math.sqrt(m / C2);
-        double h = -D2 / (2 * A2);
-        double k = -E2 / (2 * C2);
+    private void drawEllipse(Matrix ellipse, Graphics2D g) {
+        Matrix ellipseData = getEllipseData(ellipse);
+        double theta = ellipseData.get(0, 0);
+        double a = ellipseData.get(0, 1);
+        double b = ellipseData.get(0, 2);
+        double h = ellipseData.get(0, 3);
+        double k = ellipseData.get(0, 4);
         g.rotate(-theta, getWidth() / 2, getHeight() / 2);
-
         g.fillOval((int) Math.round(getWidth() / 2 + (h - a) * maxDim / 2), (int) Math.round(getHeight() / 2 - (k + b) * maxDim / 2),
                 (int) Math.round(a * maxDim), (int) Math.round(b * maxDim));
         g.rotate(theta, getWidth() / 2, getHeight() / 2);
@@ -93,17 +87,6 @@ public class Painter extends JPanel {
         double a7 = Math.tan(Camera.FOV / 2) * A.get(0, 0) * r_prime / b;
         double a8 = -Math.tan(Camera.FOV / 2) * A.get(0, 1) * A.get(0, 2) * r_prime / (d_prime * b);
 
-        /*final double STEP = 0.1;
-        for (double theta = 0; theta < 2 * Math.PI; theta += STEP) {
-            Matrix p1 = new Matrix(new double[][]{{a1 + a2 * Math.cos(theta) + a3 * Math.sin(theta), a4 + a5 * Math.sin(theta)}});
-            p1.multBy(1.0 / (a6 + a7 * Math.cos(theta) + a8 * Math.sin(theta)));
-            p1 = screenScale(p1);
-            Matrix p2 = new Matrix(new double[][]{{a1 + a2 * Math.cos(theta + STEP) + a3 * Math.sin(theta + STEP), a4 + a5 * Math.sin(theta + STEP)}});
-            p2.multBy(1.0 / (a6 + a7 * Math.cos(theta + STEP) + a8 * Math.sin(theta + STEP)));
-            p2 = screenScale(p2);
-            g.drawLine((int) p1.get(0, 0), (int) p1.get(0, 1), (int) p2.get(0, 0), (int) p2.get(0, 1));
-        }*/
-
         Matrix linSystem = new Matrix(new double[][]{
                 {2 * a1 * a2, a2 * a4, 0, a2 * a6 + a1 * a7, a4 * a7, -2 * a6 * a7},
                 {2 * a1 * a3, a3 * a4 + a1 * a5, 2 * a4 * a5, a3 * a6 + a1 * a8, a5 * a6 + a4 * a8, -2 * a6 * a8},
@@ -111,8 +94,8 @@ public class Painter extends JPanel {
                 {a1 * a1 + a3 * a3, a1 * a4 + a3 * a5, a4 * a4 + a5 * a5, a1 * a6 + a3 * a8, a4 * a6 + a5 * a8, -a6 * a6 - a8 * a8},
                 {a2 * a2 - a3 * a3, -a3 * a5, -a5 * a5, a2 * a7 - a3 * a8, -a5 * a8, -a7 * a7 + a8 * a8}
         });
-        Matrix conic = solveLinSystem(linSystem);
-        drawConic(conic, g);
+        Matrix ellipse = solveLinSystem(linSystem);
+        drawEllipse(ellipse, g);
     }
 
     private void drawLine(Graphics2D g, LineSeg ls) {
@@ -189,7 +172,7 @@ public class Painter extends JPanel {
         g.translate(getWidth() + SideBar.TAB_RADIUS - SideBar.getTabProtrusion(), getHeight() / 2);
         g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
         g.setStroke(new BasicStroke(5));
-        if(WindowManager.mouseUI.onTab) g.setColor(Color.WHITE);
+        if (WindowManager.mouseUI.onTab) g.setColor(Color.WHITE);
         else g.setColor(new Color(200, 200, 200));
         if (SideBar.showingBar) {
             g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
@@ -197,28 +180,36 @@ public class Painter extends JPanel {
             int shift = (int) (Math.sqrt(0.5) * (5 + SideBar.TAB_RADIUS / 6));
             g.drawRect(-100 - shift, shift, 100, 100);
             g.rotate(-Math.PI / 4, 0, 0);
-            g.setClip(0, 0, getWidth(), getHeight());
         } else {
             g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
             g.rotate(Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
             int shift = (int) (Math.sqrt(0.5) * 5);
             g.drawRect(-2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
             g.rotate(-Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
-            g.setClip(0, 0, getWidth(), getHeight());
         }
         g.translate(-getWidth() - SideBar.TAB_RADIUS + SideBar.getTabProtrusion(), -getHeight() / 2);
+        g.setClip(0, 0, getWidth(), getHeight());
     }
 
     private void drawSideBar(Graphics2D g) {
         drawTab(g);
-        g.setClip(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
+        g.setClip(getWidth(), 0, SideBar.width, getHeight());
+        g.translate(getWidth(), 0);
         g.setColor(Color.GRAY);
-        g.fillRect(super.getWidth() - SideBar.width, 0, SideBar.width, getHeight());
-        g.setColor(Color.WHITE);
-        g.fillRect(super.getWidth() - SideBar.MAX_WIDTH + 10, 10, SideBar.MAX_WIDTH - 20, 10);
+        g.fillRect(0, 0, SideBar.width, getHeight());
+        int totalDY = 0;
+        for (UIComponent uic : SideBar.getUIComponents()) {
+            uic.draw(g);
+            totalDY += uic.height + uic.topMargin;
+            g.translate(0, uic.height + uic.topMargin);
+        }
+        g.translate(-getWidth(), -totalDY);
+        g.setClip(0, 0, getWidth(), getHeight());
     }
 
     public void paintComponent(Graphics _g) {
+        brightness_coeff = (MAX_BRIGHTNESS - MIN_BRIGHTNESS) * SideBar.brightnessSlider.sliderLoc + MIN_BRIGHTNESS;
+
         Graphics2D g = (Graphics2D) _g;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, getWidth(), getHeight());

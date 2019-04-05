@@ -1,3 +1,6 @@
+package main;
+
+import UI.MouseUI;
 import objects.Camera;
 
 import javax.swing.*;

@@ -1,11 +1,11 @@
+package main;
+
 import math.Matrix;
-import objects.Camera;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 
 import static math.LinAlg.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
