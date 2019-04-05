@@ -1,5 +1,6 @@
 package UI;
 
+import main.UIManager;
 import main.WindowManager;
 import objects.Camera;
 
@@ -12,9 +13,12 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     private boolean mouseDown;
     private int lastX, lastY;
 
-    private static final double X_SENSITIVITY = 0.01;
-    private static final double Y_SENSITIVITY = 0.01;
-    private static final double WHEEL_SENSITIVITY = 0.4;
+    public static final double MIN_X_SENSITIVITY = 0.001;
+    public static final double MAX_X_SENSITIVITY = 0.1;
+    public static final double MIN_Y_SENSITIVITY = 0.001;
+    public static final double MAX_Y_SENSITIVITY = 0.1;
+    public static final double MIN_WHEEL_SENSITIVITY = 0.05;
+    public static final double MAX_WHEEL_SENSITIVITY = 10;
 
     public boolean onTab;
 
@@ -42,8 +46,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             int dy = newY - lastY;
             lastX = e.getX();
             lastY = e.getY();
-            Camera.increaseTilt(Y_SENSITIVITY * dy);
-            Camera.increaseTheta(X_SENSITIVITY * dx);
+            Camera.increaseTilt(UIManager.ySensitivitySlider.getVal() * dy);
+            Camera.increaseTheta(UIManager.xSensitivitySlider.getVal() * dx);
         }
         lastX = newX;
         lastY = newY;
@@ -77,7 +81,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             int xPos = e.getX();
             int yPos = e.getY();
             xPos -= screenWidth;
-            for (UIComponent uic : SideBar.getUIComponents()) {
+            for (UIComponent uic : UIManager.getUIComponents()) {
                 if (uic instanceof Slider && ((Slider) uic).onSlider(xPos, yPos)) {
                     onSlider = true;
                     currentSlider = (Slider) uic;
@@ -116,7 +120,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         if (e.getX() >= screenWidth) {
 
         } else {
-            Camera.increaseDis(WHEEL_SENSITIVITY * e.getPreciseWheelRotation());
+            Camera.increaseDis(UIManager.mouseWheelSensitivitySlider.getVal() * e.getPreciseWheelRotation());
         }
     }
 }

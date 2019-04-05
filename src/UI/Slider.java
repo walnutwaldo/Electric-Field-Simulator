@@ -7,16 +7,23 @@ public class Slider extends UIComponent {
     public static final int TOP_MARGIN = 10;
     public static final int LEFT_MARGIN = 10;
     public static final int WIDTH = SideBar.MAX_WIDTH - 20;
-    public static final int HEIGHT = 10;
+    public static final int HEIGHT = 7;
+    public static final int LINEAR = 0;
+    public static final int LOGARITHMIC = 1;
 
     public static final int SLIDER_WIDTH = 7;
-    public static final int SLIDER_HEIGHT = 15;
+    public static final int SLIDER_HEIGHT = 12;
 
     public double sliderLoc;
+    private double min, max;
+    private int type;
 
-    public Slider() {
+    public Slider(double _min, double _max, int _type) {
         super(TOP_MARGIN, LEFT_MARGIN, WIDTH, HEIGHT);
         sliderLoc = 0.5;
+        min = _min;
+        max = _max;
+        type = _type;
     }
 
     public void draw(Graphics2D g) {
@@ -33,5 +40,11 @@ public class Slider extends UIComponent {
     public boolean onSlider(int x, int y) {
         return between(x - (leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2), 0, SLIDER_WIDTH) &&
                 between(y - (topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2), 0, SLIDER_HEIGHT);
+    }
+
+    public double getVal() {
+        if (type == LINEAR) return min + (max - min) * sliderLoc;
+        else if (type == LOGARITHMIC) return min * Math.pow((max / min), sliderLoc);
+        else return -1;
     }
 }

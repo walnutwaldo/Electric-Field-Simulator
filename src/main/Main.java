@@ -21,7 +21,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        SideBar.init();
+        UIManager.init();
         SimulationManager.init();
         WindowManager.init();
         timer = new Timer(TIMER_DELAY, new ActionListener() {

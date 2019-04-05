@@ -19,14 +19,14 @@ import java.util.List;
 
 public class Painter extends JPanel {
 
-    private static final int MIN_BRIGHTNESS = 100000;
-    private static final int MAX_BRIGHTNESS = 1000000;
+    public static final int MIN_BRIGHTNESS = 100000;
+    public static final int MAX_BRIGHTNESS = 1000000;
 
     private static final int[] DX = new int[]{-1, 0, 1, 0};
     private static final int[] DY = new int[]{0, 1, 0, -1};
 
     private static final double GRID_STEP = 5;
-    private static double brightness_coeff = 500000;
+    private static double brightnessCoefficient = 500000;
 
     private Camera camera;
 
@@ -68,7 +68,7 @@ public class Painter extends JPanel {
 
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
         if (!visible(pos)) return;
-        int brightness = (int) Math.min(255, brightness_coeff / squareDis(pos, cameraPos));
+        int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(pos, cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 
         Matrix p_prime = Matrix.subtract(pos, cameraPos);
@@ -103,7 +103,7 @@ public class Painter extends JPanel {
         Matrix p2 = Matrix.mult(ls.pnt2, cameraMatrix);
         LineSeg vis = getVisibleSeg(p1, p2);
 
-        int brightness = (int) Math.min(255, brightness_coeff / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
+        int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 
         if (vis.pnt1 == null) return;
@@ -198,7 +198,7 @@ public class Painter extends JPanel {
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, SideBar.width, getHeight());
         int totalDY = 0;
-        for (UIComponent uic : SideBar.getUIComponents()) {
+        for (UIComponent uic : UIManager.getUIComponents()) {
             uic.draw(g);
             totalDY += uic.height + uic.topMargin;
             g.translate(0, uic.height + uic.topMargin);
@@ -208,7 +208,7 @@ public class Painter extends JPanel {
     }
 
     public void paintComponent(Graphics _g) {
-        brightness_coeff = (MAX_BRIGHTNESS - MIN_BRIGHTNESS) * SideBar.brightnessSlider.sliderLoc + MIN_BRIGHTNESS;
+        brightnessCoefficient = UIManager.brightnessSlider.getVal();
 
         Graphics2D g = (Graphics2D) _g;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
