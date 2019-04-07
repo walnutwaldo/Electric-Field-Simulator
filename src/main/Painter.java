@@ -2,6 +2,7 @@ package main;
 
 import UI.SideBar;
 import UI.UIComponent;
+import javafx.geometry.Pos;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
@@ -33,12 +34,6 @@ public class Painter extends JPanel {
     private double maxDim;
     private Matrix cameraMatrix;
     private Matrix cameraPos;
-
-    private PriorityQueue<Positionable> pq = new PriorityQueue<Positionable>(new Comparator<Positionable>() {
-        public int compare(Positionable o1, Positionable o2) {
-            return (int) Math.signum(o2.getDisTo(camera.getPos()) - o1.getDisTo(camera.getPos()));
-        }
-    });
 
     public Painter(Camera _camera) {
         super();
@@ -109,8 +104,7 @@ public class Painter extends JPanel {
         if (vis.pnt1 == null) return;
         p1 = toScreen(vis.pnt1);
         p2 = toScreen(vis.pnt2);
-        g.drawLine((int) Math.round(p1.get(0, 0)), (int) Math.round(p1.get(0, 1)),
-                (int) Math.round(p2.get(0, 0)), (int) Math.round(p2.get(0, 1)));
+        g.drawLine((int) p1.get(0, 0), (int) p1.get(0, 1), (int) p2.get(0, 0), (int) p2.get(0, 1));
     }
 
     private boolean visible(Matrix point) {
@@ -138,7 +132,7 @@ public class Painter extends JPanel {
         return new LineSeg(null, null);
     }
 
-    void drawGrid(Graphics2D g) {
+    void addGrid(PriorityQueue<Positionable> pq) {
         List<LineSeg> list = new ArrayList<LineSeg>();
         for (double i = -SimulationManager.GRID_SIZE; i <= SimulationManager.GRID_SIZE; i += GRID_STEP) {
             for (double j = -SimulationManager.GRID_SIZE; j <= SimulationManager.GRID_SIZE; j += GRID_STEP) {
@@ -220,7 +214,12 @@ public class Painter extends JPanel {
         cameraMatrix = Camera.getTransformationMatrix();
         cameraPos = new Matrix(new double[][]{{0, -Camera.getDis(), 0}});
         maxDim = Math.max(getWidth(), getHeight());
-        drawGrid(g);
+        PriorityQueue<Positionable> pq = new PriorityQueue<Positionable>(new Comparator<Positionable>() {
+            public int compare(Positionable o1, Positionable o2) {
+                return (int) Math.signum(o2.getDisTo(camera.getPos()) - o1.getDisTo(camera.getPos()));
+            }
+        });
+        addGrid(pq);
         g.setColor(Color.WHITE);
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);

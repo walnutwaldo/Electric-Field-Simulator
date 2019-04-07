@@ -20,6 +20,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public static final double MIN_WHEEL_SENSITIVITY = 0.05;
     public static final double MAX_WHEEL_SENSITIVITY = 10;
 
+    private static final int TAB_ACTIVATION_DIS = 5;
+
     public boolean onTab;
 
     private boolean onSlider;
@@ -60,7 +62,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         int screenWidth = WindowManager.painter.getWidth();
         int screenHeight = WindowManager.painter.getHeight();
         onTab = newX < screenWidth && Math.pow(newX - screenWidth, 2) + Math.pow(newY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
-        if (newX >= screenWidth - 5 || onTab) {
+        if (newX >= screenWidth - TAB_ACTIVATION_DIS || newX <= TAB_ACTIVATION_DIS || newY <= TAB_ACTIVATION_DIS || newY >= screenHeight - TAB_ACTIVATION_DIS || onTab) {
             SideBar.showTab();
         } else if (newX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
         if (onTab) WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -111,7 +113,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        SideBar.showTab();
     }
 
     @Override

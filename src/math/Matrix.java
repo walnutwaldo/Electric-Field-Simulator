@@ -4,6 +4,13 @@ public class Matrix {
 
     private double[][] mat;
 
+    public Matrix(Matrix m) {
+        mat = new double[m.mat.length][m.mat[0].length];
+        for (int i = 0; i < mat.length; i++)
+            for (int j = 0; j < mat[0].length; j++)
+                mat[i][j] = m.mat[i][j];
+    }
+
     public Matrix(int r, int c) {
         mat = new double[r][c];
     }

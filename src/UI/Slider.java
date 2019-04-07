@@ -33,8 +33,10 @@ public class Slider extends UIComponent {
         g.fillRect(leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2, topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2, SLIDER_WIDTH, SLIDER_HEIGHT);
     }
 
+    private static final int LEEWAY = 2;
+
     private boolean between(int a, int b, int c) {
-        return a >= b && a <= c;
+        return a >= b - LEEWAY && a <= c + LEEWAY;
     }
 
     public boolean onSlider(int x, int y) {

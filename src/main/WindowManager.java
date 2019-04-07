@@ -30,7 +30,6 @@ public class WindowManager {
         painter.addMouseListener(mouseUI);
         painter.addMouseWheelListener(mouseUI);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
