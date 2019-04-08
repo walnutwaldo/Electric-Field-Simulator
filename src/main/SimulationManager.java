@@ -21,10 +21,10 @@ public class SimulationManager {
 
     public static void init() {
         fixedCharges = new ArrayList<FixedPointCharge>();
-        fixedCharges.add(new FixedPointCharge(10, 10, 0, 5));
-        fixedCharges.add(new FixedPointCharge(-10, 10, 0, -5));
-        fixedCharges.add(new FixedPointCharge(-10, -10, 0, 5));
-        fixedCharges.add(new FixedPointCharge(10, -10, 0, -5));
+        fixedCharges.add(new FixedPointCharge(10, 10, 5, 5));
+        fixedCharges.add(new FixedPointCharge(-10, 10, -5, -5));
+        fixedCharges.add(new FixedPointCharge(-10, -10, 5, 5));
+        fixedCharges.add(new FixedPointCharge(10, -10, -5, -5));
 
         movingCharges = new ArrayList<MovingCharge>();
     }

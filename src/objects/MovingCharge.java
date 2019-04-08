@@ -1,6 +1,7 @@
 package objects;
 
 import main.SimulationManager;
+import main.UIManager;
 import math.Matrix;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public class MovingCharge implements Positionable {
 
     public static final double RADIUS = 0.1;
     public static final double MIN_DIS = 0.1;
-    public static final double SPEED = 300;
+    public static final double MIN_SPEED = 0;
+    public static final double MAX_SPEED = 1000;
 
     private Matrix pos;
     private Matrix velocity;
@@ -56,7 +58,7 @@ public class MovingCharge implements Positionable {
                     fpc.getCharge() / squareDis(pos, fpc.getPos()));
             velocity = Matrix.add(velocity, a);
         }
-        Matrix newPos = Matrix.add(pos, Matrix.scale(velocity, SPEED * dt));
+        Matrix newPos = Matrix.add(pos, Matrix.scale(velocity, UIManager.speedSlider.getVal() * dt));
 
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges())
             if (getDis(fpc.getPos(), new LineSeg(pos, newPos)) < MIN_DIS)
@@ -67,7 +69,7 @@ public class MovingCharge implements Positionable {
 
     public Matrix getPos() {
         double dt = (double) (System.currentTimeMillis() - lastT) / 1000;
-        Matrix newP = Matrix.add(pos, Matrix.scale(velocity, SPEED * dt));
+        Matrix newP = Matrix.add(pos, Matrix.scale(velocity, UIManager.speedSlider.getVal() * dt));
 
         for(int dim = 0; dim < 3; dim++) if(Math.abs(newP.get(0, dim)) > SimulationManager.GRID_SIZE) finished = true;
         if(finished) return pos;

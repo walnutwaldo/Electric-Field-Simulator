@@ -62,7 +62,7 @@ public class Painter extends JPanel {
     }
 
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
-        if (!visible(pos)) return;
+        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, +r / Math.sin(Camera.FOV / 2), 0}})))) return;
         int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(pos, cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 

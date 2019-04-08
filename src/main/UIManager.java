@@ -4,6 +4,7 @@ import UI.Header;
 import UI.MouseUI;
 import UI.Slider;
 import UI.UIComponent;
+import objects.MovingCharge;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,11 +18,13 @@ public class UIManager {
     public static Header xSensitivityHeader;
     public static Header ySensitivityHeader;
     public static Header movingChargeHeader;
+    public static Header speedHeader;
     public static Slider brightnessSlider;
     public static Slider mouseWheelSensitivitySlider;
     public static Slider xSensitivitySlider;
     public static Slider ySensitivitySlider;
     public static Slider movingChargeSlider;
+    public static Slider speedSlider;
 
     public static void init() {
         uiComponents = new ArrayList<UIComponent>();
@@ -49,6 +52,11 @@ public class UIManager {
         uiComponents.add(movingChargeHeader);
         movingChargeSlider = new Slider(SimulationManager.MIN_MOVING_CHARGES, SimulationManager.MAX_MOVING_CHARGES, Slider.LOGARITHMIC);
         uiComponents.add(movingChargeSlider);
+
+        speedHeader = new Header("Speed", new Font("Havana", Font.BOLD, 12), Color.WHITE);
+        uiComponents.add(speedHeader);
+        speedSlider = new Slider(MovingCharge.MIN_SPEED, MovingCharge.MAX_SPEED, Slider.LINEAR);
+        uiComponents.add(speedSlider);
     }
 
     public static List<UIComponent> getUIComponents() {
