@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72ae2d66-fa99-4151-9611-48f07b4bc5e9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/UI/MouseUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/MouseUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Painter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Painter.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,7 +21,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/objects/Camera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-816">
+            <state relative-caret-position="136">
               <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
               <folding>
                 <element signature="e#509#510#0" expanded="true" />
@@ -30,11 +31,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/MouseUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="111" column="160" selection-start-line="111" selection-start-column="160" selection-end-line="111" selection-end-column="160" />
+            <state relative-caret-position="1020">
+              <caret line="110" column="9" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4989#4990#0" expanded="true" />
@@ -55,18 +56,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="95" selection-start-line="95" selection-end-line="95" />
+            <state relative-caret-position="577">
+              <caret line="226" column="68" selection-start-line="226" selection-start-column="68" selection-end-line="226" selection-end-column="68" />
               <folding>
                 <element signature="method#Painter#0;class#Painter#0" />
                 <element signature="method#visible#0;class#Painter#0" />
                 <element signature="method#getVisibleSeg#0;class#Painter#0" />
                 <element signature="method#screenScale#0;class#Painter#0" />
                 <element signature="method#toScreen#0;class#Painter#0" />
-                <element signature="method#drawSideBar#0;class#Painter#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/UI/SideBar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-296">
+              <caret line="8" column="27" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,8 +143,8 @@
         <option value="$PROJECT_DIR$/src/main/SimulationManager.java" />
         <option value="$PROJECT_DIR$/src/UI/Slider.java" />
         <option value="$PROJECT_DIR$/src/objects/MovingCharge.java" />
-        <option value="$PROJECT_DIR$/src/main/Painter.java" />
         <option value="$PROJECT_DIR$/src/UI/MouseUI.java" />
+        <option value="$PROJECT_DIR$/src/main/Painter.java" />
       </list>
     </option>
   </component>
@@ -251,7 +263,7 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18108653" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18108653" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -260,7 +272,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.37482318" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37482318" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -531,16 +543,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/SideBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="8" column="27" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/Slider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -571,24 +573,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
-          <folding>
-            <element signature="method#Painter#0;class#Painter#0" />
-            <element signature="method#visible#0;class#Painter#0" />
-            <element signature="method#getVisibleSeg#0;class#Painter#0" />
-            <element signature="method#screenScale#0;class#Painter#0" />
-            <element signature="method#toScreen#0;class#Painter#0" />
-            <element signature="method#drawSideBar#0;class#Painter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/objects/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
+        <state relative-caret-position="136">
           <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
           <folding>
             <element signature="e#509#510#0" expanded="true" />
@@ -599,11 +586,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/MouseUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="111" column="160" selection-start-line="111" selection-start-column="160" selection-end-line="111" selection-end-column="160" />
+        <state relative-caret-position="1020">
+          <caret line="110" column="9" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4989#4990#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/SideBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-296">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="577">
+          <caret line="226" column="68" selection-start-line="226" selection-start-column="68" selection-end-line="226" selection-end-column="68" />
+          <folding>
+            <element signature="method#Painter#0;class#Painter#0" />
+            <element signature="method#visible#0;class#Painter#0" />
+            <element signature="method#getVisibleSeg#0;class#Painter#0" />
+            <element signature="method#screenScale#0;class#Painter#0" />
+            <element signature="method#toScreen#0;class#Painter#0" />
           </folding>
         </state>
       </provider>

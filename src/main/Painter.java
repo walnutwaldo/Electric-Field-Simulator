@@ -205,7 +205,8 @@ public class Painter extends JPanel {
     private void drawTab(Graphics2D g) {
         g.setClip(0, 0, getWidth(), getHeight());
         g.setColor(Color.GRAY);
-        g.translate(getWidth() + SideBar.TAB_RADIUS - SideBar.getTabProtrusion(), getHeight() / 2);
+        double tabProtrusion = SideBar.getTabProtrusion();
+        g.translate(getWidth() + SideBar.TAB_RADIUS - tabProtrusion, getHeight() / 2);
         g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
         g.setStroke(new BasicStroke(5));
         if (WindowManager.mouseUI.onTab) g.setColor(Color.WHITE);
@@ -223,7 +224,7 @@ public class Painter extends JPanel {
             g.drawRect(-2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
             g.rotate(-Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
         }
-        g.translate(-getWidth() - SideBar.TAB_RADIUS + SideBar.getTabProtrusion(), -getHeight() / 2);
+        g.translate(-getWidth() - SideBar.TAB_RADIUS + tabProtrusion, -getHeight() / 2);
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
