@@ -3,26 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="72ae2d66-fa99-4151-9611-48f07b4bc5e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/UI/MouseUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/UI/MouseUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/UI/Slider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/UI/Slider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Painter$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Painter$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Painter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/Painter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/SimulationManager$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/SimulationManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/SimulationManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/WindowManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/main/WindowManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/math/Matrix.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/math/Matrix.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/objects/MovingCharge.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Electric-Field-Simulator/objects/MovingCharge.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/MouseUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/MouseUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/Slider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/Slider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/Painter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Painter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/SimulationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/SimulationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/UIManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/WindowManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/WindowManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects/MovingCharge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects/MovingCharge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/Conics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Conics.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="106" column="81" selection-start-line="106" selection-start-column="81" selection-end-line="106" selection-end-column="81" />
+            <state relative-caret-position="187">
+              <caret line="51" column="21" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#9849#9863#0" expanded="true" />
@@ -60,14 +42,22 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="37" lean-forward="true" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="47" lean-forward="true" selection-start-line="45" selection-start-column="47" selection-end-line="45" selection-end-column="47" />
+            <state relative-caret-position="272">
+              <caret line="31" column="60" lean-forward="true" selection-start-line="31" selection-start-column="60" selection-end-line="31" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1595#1596#0" expanded="true" />
                 <element signature="e#1663#1664#0" expanded="true" />
                 <element signature="e#1844#1858#0" expanded="true" />
                 <element signature="e#1758#1772#0" expanded="true" />
@@ -80,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/objects/MovingCharge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="74" column="5" lean-forward="true" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
+            <state relative-caret-position="255">
+              <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2658#2659#0" expanded="true" />
@@ -98,6 +88,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
               <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -143,7 +145,6 @@
         <option value="$PROJECT_DIR$/src/MouseUI.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/SideBar.java" />
-        <option value="$PROJECT_DIR$/src/math/Conics.java" />
         <option value="$PROJECT_DIR$/src/objects/Camera.java" />
         <option value="$PROJECT_DIR$/src/objects/Positionable.java" />
         <option value="$PROJECT_DIR$/src/Painter.java" />
@@ -152,15 +153,16 @@
         <option value="$PROJECT_DIR$/src/UI/UIManager.java" />
         <option value="$PROJECT_DIR$/src/UI/Header.java" />
         <option value="$PROJECT_DIR$/src/UI/MouseUI.java" />
-        <option value="$PROJECT_DIR$/src/main/UIManager.java" />
         <option value="$PROJECT_DIR$/src/UI/Slider.java" />
         <option value="$PROJECT_DIR$/src/UI/Main.java" />
         <option value="$PROJECT_DIR$/src/main/WindowManager.java" />
         <option value="$PROJECT_DIR$/src/math/Matrix.java" />
-        <option value="$PROJECT_DIR$/src/objects/MovingCharge.java" />
         <option value="$PROJECT_DIR$/src/main/Main.java" />
+        <option value="$PROJECT_DIR$/src/objects/MovingCharge.java" />
+        <option value="$PROJECT_DIR$/src/main/UIManager.java" />
         <option value="$PROJECT_DIR$/src/main/SimulationManager.java" />
         <option value="$PROJECT_DIR$/src/main/Painter.java" />
+        <option value="$PROJECT_DIR$/src/math/Conics.java" />
       </list>
     </option>
   </component>
@@ -284,7 +286,7 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18108653" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18108653" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -293,7 +295,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37482318" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.37482318" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -363,13 +365,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-177">
           <caret line="91" column="40" selection-start-line="91" selection-start-column="40" selection-end-line="91" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -451,16 +446,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/AbstractCollection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
@@ -519,20 +504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/objects/MovingCharge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" column="5" lean-forward="true" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2658#2659#0" expanded="true" />
-            <element signature="e#2735#2736#0" expanded="true" />
-            <element signature="e#2770#2771#0" expanded="true" />
-            <element signature="e#2801#2802#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/WindowManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -555,13 +526,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
+    <entry file="file://$PROJECT_DIR$/src/objects/MovingCharge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="47" lean-forward="true" selection-start-line="45" selection-start-column="47" selection-end-line="45" selection-end-column="47" />
+        <state relative-caret-position="255">
+          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1595#1596#0" expanded="true" />
+            <element signature="e#2658#2659#0" expanded="true" />
+            <element signature="e#2735#2736#0" expanded="true" />
+            <element signature="e#2770#2771#0" expanded="true" />
+            <element signature="e#2801#2802#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="31" column="60" lean-forward="true" selection-start-line="31" selection-start-column="60" selection-end-line="31" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#1663#1664#0" expanded="true" />
             <element signature="e#1844#1858#0" expanded="true" />
             <element signature="e#1758#1772#0" expanded="true" />
@@ -572,12 +566,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="106" column="81" selection-start-line="106" selection-start-column="81" selection-end-line="106" selection-end-column="81" />
+        <state relative-caret-position="187">
+          <caret line="51" column="21" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#9849#9863#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="37" lean-forward="true" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
         </state>
       </provider>
     </entry>

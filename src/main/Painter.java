@@ -49,6 +49,7 @@ public class Painter extends JPanel {
     }
 
     private void drawEllipse(Matrix ellipse, Graphics2D g) {
+        if(!isEllipse(ellipse)) return;
         Matrix ellipseData = getEllipseData(ellipse);
         double theta = ellipseData.get(0, 0);
         double a = ellipseData.get(0, 1);
@@ -62,7 +63,8 @@ public class Painter extends JPanel {
     }
 
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
-        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, +r / Math.sin(Camera.FOV / 2), 0}})))) return;
+        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, +r / Math.sin(Camera.FOV / 2), 0}}))))
+            return;
         int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(pos, cameraPos));
         g.setColor(new Color(brightness, brightness, brightness));
 
@@ -162,6 +164,7 @@ public class Painter extends JPanel {
     }
 
     private void drawTab(Graphics2D g) {
+        g.setClip(0, 0, getWidth(), getHeight());
         g.setColor(Color.GRAY);
         g.translate(getWidth() + SideBar.TAB_RADIUS - SideBar.getTabProtrusion(), getHeight() / 2);
         g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);

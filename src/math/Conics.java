@@ -2,6 +2,13 @@ package math;
 
 public class Conics {
 
+    public static boolean isEllipse(Matrix conic) {
+        double A = conic.get(0, 0);
+        double B = conic.get(0, 1);
+        double C = conic.get(0, 2);
+        return B * B - 4 * A * C < 0;
+    }
+
     public static Matrix getEllipseData(Matrix ellipse) {
         double A = ellipse.get(0, 0);
         double B = ellipse.get(0, 1);
