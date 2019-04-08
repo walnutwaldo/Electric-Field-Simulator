@@ -2,7 +2,6 @@ package main;
 
 import UI.SideBar;
 import UI.UIComponent;
-import javafx.geometry.Pos;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
@@ -14,6 +13,7 @@ import static math.Conics.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 
@@ -22,6 +22,8 @@ public class Painter extends JPanel {
 
     public static final int MIN_BRIGHTNESS = 100000;
     public static final int MAX_BRIGHTNESS = 1000000;
+
+    private static final double MAX_LINE_SEG_LENGTH = 2;
 
     private static final int[] DX = new int[]{-1, 0, 1, 0};
     private static final int[] DY = new int[]{0, 1, 0, -1};
@@ -49,17 +51,17 @@ public class Painter extends JPanel {
     }
 
     private void drawEllipse(Matrix ellipse, Graphics2D g) {
-        if(!isEllipse(ellipse)) return;
+        if (!isEllipse(ellipse)) return;
         Matrix ellipseData = getEllipseData(ellipse);
         double theta = ellipseData.get(0, 0);
         double a = ellipseData.get(0, 1);
         double b = ellipseData.get(0, 2);
         double h = ellipseData.get(0, 3);
         double k = ellipseData.get(0, 4);
-        g.rotate(-theta, getWidth() / 2, getHeight() / 2);
-        g.fillOval((int) Math.round(getWidth() / 2 + (h - a) * maxDim / 2), (int) Math.round(getHeight() / 2 - (k + b) * maxDim / 2),
-                (int) Math.round(a * maxDim), (int) Math.round(b * maxDim));
-        g.rotate(theta, getWidth() / 2, getHeight() / 2);
+        g.rotate(-theta, (double) getWidth() / 2, (double) getHeight() / 2);
+        g.fill(new Ellipse2D.Double(getWidth() / 2 + (h - a) * maxDim / 2, getHeight() / 2 - (k + b) * maxDim / 2,
+                a * maxDim, b * maxDim));
+        g.rotate(theta, (double) getWidth() / 2, (double) getHeight() / 2);
     }
 
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
@@ -106,7 +108,7 @@ public class Painter extends JPanel {
         if (vis.pnt1 == null) return;
         p1 = toScreen(vis.pnt1);
         p2 = toScreen(vis.pnt2);
-        g.drawLine((int) p1.get(0, 0), (int) p1.get(0, 1), (int) p2.get(0, 0), (int) p2.get(0, 1));
+        g.draw(new Line2D.Double(p1.get(0, 0), p1.get(0, 1), p2.get(0, 0), p2.get(0, 1)));
     }
 
     private boolean visible(Matrix point) {
@@ -134,21 +136,50 @@ public class Painter extends JPanel {
         return new LineSeg(null, null);
     }
 
-    void addGrid(PriorityQueue<Positionable> pq) {
-        List<LineSeg> list = new ArrayList<LineSeg>();
-        for (double i = -SimulationManager.GRID_SIZE; i <= SimulationManager.GRID_SIZE; i += GRID_STEP) {
-            for (double j = -SimulationManager.GRID_SIZE; j <= SimulationManager.GRID_SIZE; j += GRID_STEP) {
-                Matrix centerPos = new Matrix(new double[][]{{i, j, 0}});
-                loop:
-                for (int k = 0; k < 4; k++) {
-                    Matrix newp = new Matrix(new double[][]{{i + DX[k] * GRID_STEP, j + DY[k] * GRID_STEP, 0}});
-                    for (int dim = 0; dim < 3; dim++)
-                        if (Math.abs(newp.get(0, dim)) > SimulationManager.GRID_SIZE) continue loop;
-
-                    pq.add(new LineSeg(centerPos, newp));
-                }
+    void addLineSeg(Matrix p1, Matrix p2, PriorityQueue<Positionable> pq) {
+        Matrix curr = new Matrix(p1);
+        Matrix unit = Matrix.scale(Matrix.normalize(Matrix.subtract(p2, p1)), MAX_LINE_SEG_LENGTH);
+        while (true) {
+            double dis = getDis(curr, p2);
+            if (dis < MAX_LINE_SEG_LENGTH) {
+                pq.add(new LineSeg(curr, p2));
+                break;
+            } else {
+                Matrix next = Matrix.add(curr, unit);
+                pq.add(new LineSeg(curr, next));
+                curr = next;
             }
         }
+    }
+
+    void addGrid(PriorityQueue<Positionable> pq) {
+        double gs = UIManager.gridSizeSlider.getVal();
+        double mx = GRID_STEP * Math.floor(gs / GRID_STEP);
+        for (double i = -mx; i <= mx; i += GRID_STEP) {
+            addLineSeg(new Matrix(new double[][]{{i, -gs, 0}}), new Matrix(new double[][]{{i, gs, 0}}), pq);
+            addLineSeg(new Matrix(new double[][]{{-gs, i, 0}}), new Matrix(new double[][]{{gs, i, 0}}), pq);
+        }
+        if (mx != gs)
+            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{-gs, gs, 0}}), pq);
+        if (mx != gs) addLineSeg(new Matrix(new double[][]{{gs, -gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), pq);
+        if (mx != gs) addLineSeg(new Matrix(new double[][]{{-gs, gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), pq);
+        if (mx != gs)
+            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{gs, -gs, 0}}), pq);
+    }
+
+    void addBox(PriorityQueue<Positionable> pq) {
+        double gs = UIManager.gridSizeSlider.getVal();
+        for (int i = 0; i < 3; i++)
+            for (double a = -gs; a <= gs; a += 2 * gs)
+                for (double b = -gs; b <= gs; b += 2 * gs) {
+                    Matrix p1 = new Matrix(new double[][]{{a, b, -gs}});
+                    p1.set(0, 2, p1.get(0, i));
+                    p1.set(0, i, -gs);
+                    Matrix p2 = new Matrix(new double[][]{{a, b, gs}});
+                    p2.set(0, 2, p2.get(0, i));
+                    p2.set(0, i, gs);
+                    addLineSeg(p1, p2, pq);
+                }
     }
 
     private Matrix screenScale(Matrix proj) {
@@ -223,6 +254,7 @@ public class Painter extends JPanel {
             }
         });
         addGrid(pq);
+        addBox(pq);
         g.setColor(Color.WHITE);
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);

@@ -63,7 +63,7 @@ public class MovingCharge implements Positionable {
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges())
             if (getDis(fpc.getPos(), new LineSeg(pos, newPos)) < MIN_DIS)
                 finished = true;
-        for(int dim = 0; dim < 3; dim++) if(Math.abs(newPos.get(0, dim)) > SimulationManager.GRID_SIZE) finished = true;
+        for(int dim = 0; dim < 3; dim++) if(Math.abs(newPos.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
         pos = newPos;
     }
 
@@ -71,7 +71,7 @@ public class MovingCharge implements Positionable {
         double dt = (double) (System.currentTimeMillis() - lastT) / 1000;
         Matrix newP = Matrix.add(pos, Matrix.scale(velocity, UIManager.speedSlider.getVal() * dt));
 
-        for(int dim = 0; dim < 3; dim++) if(Math.abs(newP.get(0, dim)) > SimulationManager.GRID_SIZE) finished = true;
+        for(int dim = 0; dim < 3; dim++) if(Math.abs(newP.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
         if(finished) return pos;
         return newP;
     }

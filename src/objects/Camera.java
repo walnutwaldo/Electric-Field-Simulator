@@ -6,7 +6,7 @@ public class Camera implements Positionable {
 
     public static final double FOV = 114.0 / 180 * Math.PI;
 
-    private static final double MIN_DIS = 20, MAX_DIS = 60;
+    private static final double MIN_DIS = 10, MAX_DIS = 100;
     private static final double START_DIS = 40;
     private static final double START_THETA = 0; // looking down the y -axis
     private static final double START_TILT = Math.PI / 4;
@@ -42,7 +42,7 @@ public class Camera implements Positionable {
     }
 
     public static void setTilt(double tilt) {
-        Camera.tilt = Math.max(0, Math.min(Math.PI / 2, tilt));
+        Camera.tilt = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, tilt));
     }
 
     public static void increaseTilt(double inc) {

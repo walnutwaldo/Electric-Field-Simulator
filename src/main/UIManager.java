@@ -7,24 +7,29 @@ import UI.UIComponent;
 import objects.MovingCharge;
 
 import java.awt.*;
+import java.net.SocketImpl;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UIManager {
 
     private static List<UIComponent> uiComponents;
+
     public static Header brightnessHeader;
     public static Header mouseWheelSensitivityHeader;
     public static Header xSensitivityHeader;
     public static Header ySensitivityHeader;
     public static Header movingChargeHeader;
     public static Header speedHeader;
+    public static Header gridSizeHeader;
+
     public static Slider brightnessSlider;
     public static Slider mouseWheelSensitivitySlider;
     public static Slider xSensitivitySlider;
     public static Slider ySensitivitySlider;
     public static Slider movingChargeSlider;
     public static Slider speedSlider;
+    public static Slider gridSizeSlider;
 
     public static void init() {
         uiComponents = new ArrayList<UIComponent>();
@@ -57,6 +62,11 @@ public class UIManager {
         uiComponents.add(speedHeader);
         speedSlider = new Slider(MovingCharge.MIN_SPEED, MovingCharge.MAX_SPEED, Slider.LINEAR);
         uiComponents.add(speedSlider);
+
+        gridSizeHeader = new Header("Grid Size", new Font("Havana", Font.BOLD, 12), Color.WHITE);
+        uiComponents.add(gridSizeHeader);
+        gridSizeSlider = new Slider(SimulationManager.MIN_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR);
+        uiComponents.add(gridSizeSlider);
     }
 
     public static List<UIComponent> getUIComponents() {

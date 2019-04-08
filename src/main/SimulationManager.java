@@ -12,7 +12,8 @@ public class SimulationManager {
 
     public static final int MIN_MOVING_CHARGES = 10;
     public static final int MAX_MOVING_CHARGES = 20000;
-    public static final int GRID_SIZE = 20;
+    public static final double MIN_GRID_SIZE = 10;
+    public static final double MAX_GRID_SIZE = 30;
 
     private static List<FixedPointCharge> fixedCharges;
     private static List<MovingCharge> movingCharges;
@@ -50,9 +51,9 @@ public class SimulationManager {
         }
 
         while (newList.size() < UIManager.movingChargeSlider.getVal()) {
-            double x = (Math.random() - 0.5) * 2 * GRID_SIZE;
-            double y = (Math.random() - 0.5) * 2 * GRID_SIZE;
-            double z = (Math.random() - 0.5) * 2 * GRID_SIZE;
+            double x = (Math.random() - 0.5) * 2 * UIManager.gridSizeSlider.getVal();
+            double y = (Math.random() - 0.5) * 2 * UIManager.gridSizeSlider.getVal();
+            double z = (Math.random() - 0.5) * 2 * UIManager.gridSizeSlider.getVal();
             newList.add(new MovingCharge(x, y, z));
         }
 
