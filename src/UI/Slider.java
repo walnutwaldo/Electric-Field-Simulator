@@ -1,5 +1,7 @@
 package UI;
 
+import main.WindowManager;
+
 import java.awt.*;
 
 public class Slider extends UIComponent {
@@ -29,14 +31,21 @@ public class Slider extends UIComponent {
     public void draw(Graphics2D g) {
         g.setColor(Color.WHITE);
         g.fillRect(leftMargin, topMargin, width, height);
-        g.setColor(new Color(200, 200, 200));
+        g.setColor(new Color(180, 180, 180));
+        if (WindowManager.mouseUI.onSlider && this == WindowManager.mouseUI.currentSlider)
+            g.setColor(new Color(200, 200, 200));
         g.fillRect(leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2, topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2, SLIDER_WIDTH, SLIDER_HEIGHT);
     }
 
-    private static final int LEEWAY = 2;
+    private static final int LEEWAY = 1;
 
-    private boolean between(int a, int b, int c) {
+    private boolean between(double a, double b, double c) {
         return a >= b - LEEWAY && a <= c + LEEWAY;
+    }
+
+    public boolean onSlider(int x, int y) {
+        return between(x - leftMargin - sliderLoc * WIDTH, -SLIDER_WIDTH / 2, SLIDER_WIDTH / 2) &&
+                between(y - topMargin - HEIGHT / 2, -SLIDER_HEIGHT / 2, SLIDER_HEIGHT / 2);
     }
 
     public boolean onBar(int x, int y) {
