@@ -26,8 +26,6 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     private boolean onSlider;
     private Slider currentSlider;
-    private double initSliderLoc;
-    private int pressX;
 
     private double clamp(double a, double b, double c) {
         return Math.max(b, Math.min(a, c));
@@ -39,10 +37,10 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         int newY = e.getY();
         int screenWidth = WindowManager.painter.getWidth();
         int screenHeight = WindowManager.painter.getHeight();
-        if (onSlider) {
-            double dx = e.getX() - pressX;
-            currentSlider.sliderLoc = clamp(initSliderLoc + (dx) / currentSlider.width, 0, 1);
-        }
+        if (onSlider)
+            currentSlider.sliderLoc =
+                    clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
+                            0, 1);
         if (mouseDown) {
             int dx = newX - lastX;
             int dy = newY - lastY;
@@ -84,10 +82,12 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             int yPos = e.getY();
             xPos -= screenWidth;
             for (UIComponent uic : UIManager.getUIComponents()) {
-                if (uic instanceof Slider && ((Slider) uic).onSlider(xPos, yPos)) {
+                if (uic instanceof Slider && ((Slider) uic).onBar(xPos, yPos)) {
                     onSlider = true;
                     currentSlider = (Slider) uic;
-                    initSliderLoc = currentSlider.sliderLoc;
+                    currentSlider.sliderLoc =
+                            clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
+                                    0, 1);
                     break;
                 }
                 yPos -= uic.topMargin + uic.height;
@@ -97,7 +97,6 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         } else {
             mouseDown = true;
         }
-        pressX = e.getX();
     }
 
     @Override

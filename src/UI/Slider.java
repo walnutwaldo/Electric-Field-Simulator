@@ -39,9 +39,9 @@ public class Slider extends UIComponent {
         return a >= b - LEEWAY && a <= c + LEEWAY;
     }
 
-    public boolean onSlider(int x, int y) {
-        return between(x - (leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2), 0, SLIDER_WIDTH) &&
-                between(y - (topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2), 0, SLIDER_HEIGHT);
+    public boolean onBar(int x, int y) {
+        return between(x - leftMargin, 0, WIDTH) &&
+                between(y - topMargin, 0, HEIGHT);
     }
 
     public double getVal() {
