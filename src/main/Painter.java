@@ -64,11 +64,19 @@ public class Painter extends JPanel {
         g.rotate(theta, (double) getWidth() / 2, (double) getHeight() / 2);
     }
 
+    int getFade(Matrix pos) {
+        double minD = MovingCharge.FADE_DIS;
+        for (int i = 0; i < 3; i++) minD = Math.min(minD, UIManager.gridSizeSlider.getVal() - Math.abs(pos.get(0, i)));
+        return (int) (255 * Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS)));
+    }
+
     private void drawSphere(Graphics2D g, Matrix pos, double r) {
-        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, +r / Math.sin(Camera.FOV / 2), 0}}))))
+        int fade = getFade(pos);
+        pos = Matrix.mult(pos, cameraMatrix);
+        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
             return;
         int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(pos, cameraPos));
-        g.setColor(new Color(brightness, brightness, brightness));
+        g.setColor(new Color(brightness, brightness, brightness, fade));
 
         Matrix p_prime = Matrix.subtract(pos, cameraPos);
         double d = p_prime.length();
@@ -261,9 +269,9 @@ public class Painter extends JPanel {
         while (!pq.isEmpty()) {
             Object o = pq.poll();
             if (o instanceof FixedPointCharge)
-                drawSphere(g, Matrix.mult(((FixedPointCharge) o).getPos(), cameraMatrix), FixedPointCharge.RADIUS);
+                drawSphere(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS);
             if (o instanceof MovingCharge)
-                drawSphere(g, Matrix.mult(((MovingCharge) o).getPos(), cameraMatrix), MovingCharge.RADIUS);
+                drawSphere(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS);
             if (o instanceof LineSeg)
                 drawLine(g, (LineSeg) o);
         }

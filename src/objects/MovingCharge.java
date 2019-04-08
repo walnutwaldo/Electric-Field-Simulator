@@ -10,6 +10,7 @@ import static math.LinAlg.*;
 
 public class MovingCharge implements Positionable {
 
+    public static final double FADE_DIS = 1;
     public static final double RADIUS = 0.1;
     public static final double MIN_DIS = 0.1;
     public static final double MIN_SPEED = 0;
