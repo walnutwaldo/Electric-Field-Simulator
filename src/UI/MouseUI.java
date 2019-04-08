@@ -22,6 +22,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     private static final int TAB_ACTIVATION_DIS = 5;
 
+    private boolean downOnTab;
+
     public boolean onTab;
     public boolean onSlider;
     public Slider currentSlider;
@@ -104,17 +106,21 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
                 }
                 yPos -= uic.topMargin + uic.height;
             }
-        } else if (Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2)) {
-            SideBar.toggle();
         } else {
             mouseDown = true;
         }
+        downOnTab = e.getX() < screenWidth && Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         mouseDown = false;
         onSlider = false;
+        int screenWidth = WindowManager.painter.getWidth();
+        int screenHeight = WindowManager.painter.getHeight();
+        if (downOnTab && e.getX() < screenWidth && Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2)) {
+            SideBar.toggle();
+        }
     }
 
     @Override
