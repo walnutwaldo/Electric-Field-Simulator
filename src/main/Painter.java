@@ -7,15 +7,18 @@ import objects.Camera;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 import objects.Positionable;
-
-import static math.LinAlg.*;
-import static math.Conics.*;
+import shapes.Line3D;
+import shapes.Sphere;
+import shapes.TabArrow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
-import java.util.List;
+import java.awt.geom.Ellipse2D;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+import static math.LinAlg.LineSeg;
+import static math.LinAlg.getDis;
 
 
 public class Painter extends JPanel {
@@ -25,22 +28,11 @@ public class Painter extends JPanel {
 
     private static final double MAX_LINE_SEG_LENGTH = 2;
 
-    private static final int[] DX = new int[]{-1, 0, 1, 0};
-    private static final int[] DY = new int[]{0, 1, 0, -1};
-
     private static final double GRID_STEP = 5;
-    private static double brightnessCoefficient = 500000;
-
-    private Camera camera;
 
     private double maxDim;
-    private Matrix cameraMatrix;
-    private Matrix cameraPos;
 
-    public Painter(Camera _camera) {
-        super();
-        camera = _camera;
-    }
+    public Graphics2D g;
 
     public int getWidth() {
         return super.getWidth() - SideBar.width;
@@ -48,100 +40,6 @@ public class Painter extends JPanel {
 
     public int getHeight() {
         return super.getHeight();
-    }
-
-    private void drawEllipse(Matrix ellipse, Graphics2D g) {
-        if (!isEllipse(ellipse)) return;
-        Matrix ellipseData = getEllipseData(ellipse);
-        double theta = ellipseData.get(0, 0);
-        double a = ellipseData.get(0, 1);
-        double b = ellipseData.get(0, 2);
-        double h = ellipseData.get(0, 3);
-        double k = ellipseData.get(0, 4);
-        g.rotate(-theta, (double) getWidth() / 2, (double) getHeight() / 2);
-        g.fill(new Ellipse2D.Double(getWidth() / 2 + (h - a) * maxDim / 2, getHeight() / 2 - (k + b) * maxDim / 2,
-                a * maxDim, b * maxDim));
-        g.rotate(theta, (double) getWidth() / 2, (double) getHeight() / 2);
-    }
-
-    int getFade(Matrix pos) {
-        double minD = MovingCharge.FADE_DIS;
-        for (int i = 0; i < 3; i++) minD = Math.min(minD, UIManager.gridSizeSlider.getVal() - Math.abs(pos.get(0, i)));
-        return (int) (255 * Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS)));
-    }
-
-    private void drawSphere(Graphics2D g, Matrix pos, double r) {
-        int fade = getFade(pos);
-        pos = Matrix.mult(pos, cameraMatrix);
-        if (!visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
-            return;
-        int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(pos, cameraPos));
-        g.setColor(new Color(brightness, brightness, brightness, fade));
-
-        Matrix p_prime = Matrix.subtract(pos, cameraPos);
-        double d = p_prime.length();
-        double r_prime = r * Math.sqrt(d * d + r * r) / d;
-        double d_prime = Math.sqrt(d * d - r * r - r_prime * r_prime);
-        Matrix A = Matrix.scale(p_prime, d_prime / d);
-        double b = Math.sqrt(Math.pow(A.get(0, 0), 2) + Math.pow(A.get(0, 1), 2));
-
-        double a1 = A.get(0, 0);
-        double a2 = -A.get(0, 1) * r_prime / b;
-        double a3 = -A.get(0, 0) * A.get(0, 2) * r_prime / (d_prime * b);
-        double a4 = A.get(0, 2);
-        double a5 = b * r_prime / d_prime;
-        double a6 = Math.tan(Camera.FOV / 2) * A.get(0, 1);
-        double a7 = Math.tan(Camera.FOV / 2) * A.get(0, 0) * r_prime / b;
-        double a8 = -Math.tan(Camera.FOV / 2) * A.get(0, 1) * A.get(0, 2) * r_prime / (d_prime * b);
-
-        Matrix linSystem = new Matrix(new double[][]{
-                {2 * a1 * a2, a2 * a4, 0, a2 * a6 + a1 * a7, a4 * a7, -2 * a6 * a7},
-                {2 * a1 * a3, a3 * a4 + a1 * a5, 2 * a4 * a5, a3 * a6 + a1 * a8, a5 * a6 + a4 * a8, -2 * a6 * a8},
-                {2 * a2 * a3, a2 * a5, 0, a2 * a8 + a3 * a7, a5 * a7, -2 * a7 * a8},
-                {a1 * a1 + a3 * a3, a1 * a4 + a3 * a5, a4 * a4 + a5 * a5, a1 * a6 + a3 * a8, a4 * a6 + a5 * a8, -a6 * a6 - a8 * a8},
-                {a2 * a2 - a3 * a3, -a3 * a5, -a5 * a5, a2 * a7 - a3 * a8, -a5 * a8, -a7 * a7 + a8 * a8}
-        });
-        Matrix ellipse = solveLinSystem(linSystem);
-        drawEllipse(ellipse, g);
-    }
-
-    private void drawLine(Graphics2D g, LineSeg ls) {
-        Matrix p1 = Matrix.mult(ls.pnt1, cameraMatrix);
-        Matrix p2 = Matrix.mult(ls.pnt2, cameraMatrix);
-        LineSeg vis = getVisibleSeg(p1, p2);
-
-        int brightness = (int) Math.min(255, brightnessCoefficient / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), cameraPos));
-        g.setColor(new Color(brightness, brightness, brightness));
-
-        if (vis.pnt1 == null) return;
-        p1 = toScreen(vis.pnt1);
-        p2 = toScreen(vis.pnt2);
-        g.draw(new Line2D.Double(p1.get(0, 0), p1.get(0, 1), p2.get(0, 0), p2.get(0, 1)));
-    }
-
-    private boolean visible(Matrix point) {
-        if (point == null) return false;
-        return point.get(0, 1) > -Camera.getDis() - EPSILON &&
-                Math.abs(point.get(0, 2)) < Math.tan(Camera.FOV / 2) * (Camera.getDis() + point.get(0, 1)) + EPSILON &&
-                Math.abs(point.get(0, 0)) < Math.tan(Camera.FOV / 2) * (Camera.getDis() + point.get(0, 1)) + EPSILON;
-    }
-
-    private LineSeg getVisibleSeg(Matrix point1, Matrix point2) {
-        if (visible(point1) && visible(point2)) return new LineSeg(point1, point2);
-        List<Matrix> ints = new ArrayList<Matrix>();
-        for (int i = 0; i < 4; i++) {
-            Matrix normal = new Matrix(new double[][]{{DX[i] * Math.sin(Camera.FOV / 2 + Math.PI / 2),
-                    Math.cos(Camera.FOV / 2 + Math.PI / 2), DY[i] * Math.sin(Camera.FOV / 2 + Math.PI / 2)}});
-            Matrix inters = intersection(new LineSeg(point1, point2), new Plane(cameraPos, normal));
-            if (visible(inters)) ints.add(inters);
-        }
-        if (visible(point1)) return new LineSeg(point1, ints.get(0));
-        if (visible(point2)) return new LineSeg(point2, ints.get(0));
-        else if (!ints.isEmpty()) {
-            for (int i = ints.size() - 1; i > 0; i--) if (approx(ints.get(i), ints.get(i - 1))) ints.remove(i);
-            return new LineSeg(ints.get(0), ints.get(1));
-        }
-        return new LineSeg(null, null);
     }
 
     void addLineSeg(Matrix p1, Matrix p2, PriorityQueue<Positionable> pq) {
@@ -190,94 +88,89 @@ public class Painter extends JPanel {
                 }
     }
 
-    private Matrix screenScale(Matrix proj) {
-        Matrix res = new Matrix(1, 2);
-        res.set(0, 0, (double) getWidth() / 2 + proj.get(0, 0) * maxDim / 2);
-        res.set(0, 1, (double) getHeight() / 2 - proj.get(0, 1) * maxDim / 2);
-        return res;
-    }
-
-    private Matrix toScreen(Matrix pos) {
-        Matrix proj = Camera.getProjection(pos);
-        return screenScale(proj);
-    }
-
-    private void drawTab(Graphics2D g) {
+    private void drawTab() {
         g.setClip(0, 0, getWidth(), getHeight());
         g.setColor(Color.GRAY);
         double tabProtrusion = SideBar.getTabProtrusion();
         g.translate(getWidth() + SideBar.TAB_RADIUS - tabProtrusion, getHeight() / 2);
-        g.fillOval(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS);
-        g.setStroke(new BasicStroke(5));
-        if (WindowManager.mouseUI.onTab) g.setColor(Color.WHITE);
+        g.fill(new Ellipse2D.Double(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS));
+        if (WindowManager.mouseUI.onTab) g.setColor(new Color(220, 220, 220));
         else g.setColor(new Color(200, 200, 200));
-        if (SideBar.showingBar) {
-            g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
-            g.rotate(Math.PI / 4, 0, 0);
-            int shift = (int) (Math.sqrt(0.5) * (5 + SideBar.TAB_RADIUS / 6));
-            g.drawRect(-100 - shift, shift, 100, 100);
-            g.rotate(-Math.PI / 4, 0, 0);
-        } else {
-            g.setClip(-2 * SideBar.TAB_RADIUS / 3, -SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS / 2, SideBar.TAB_RADIUS);
-            g.rotate(Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
-            int shift = (int) (Math.sqrt(0.5) * 5);
-            g.drawRect(-2 * SideBar.TAB_RADIUS / 3 + shift, -100 - shift, 100, 100);
-            g.rotate(-Math.PI / 4, -2 * SideBar.TAB_RADIUS / 3, 0);
-        }
+        if (SideBar.showingBar) TabArrow.draw(g, TabArrow.RIGHT);
+        else TabArrow.draw(g, TabArrow.LEFT);
         g.translate(-getWidth() - SideBar.TAB_RADIUS + tabProtrusion, -getHeight() / 2);
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
-    private void drawSideBar(Graphics2D g) {
-        drawTab(g);
+    private void drawOptionsBar() {
+        g.fillRect(0, 0, SideBar.width, getHeight());
+        g.setColor(Color.GRAY);
+        g.fillRect(SideBar.currentOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
+        if (WindowManager.mouseUI.onOption) {
+            g.setColor(new Color(110, 110, 110));
+            g.fillRect(WindowManager.mouseUI.currOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
+        }
+    }
+
+    private void drawSideBar() {
+        drawTab();
         g.setClip(getWidth(), 0, SideBar.width, getHeight());
         g.translate(getWidth(), 0);
+        g.setColor(new Color(100, 100, 100));
+        drawOptionsBar();
+        g.translate(0, SideBar.OPTIONS_HEIGHT);
         g.setColor(Color.GRAY);
-        g.fillRect(0, 0, SideBar.width, getHeight());
+        g.fillRect(0, 0, SideBar.width, getHeight() - SideBar.OPTIONS_HEIGHT);
         int totalDY = 0;
         for (UIComponent uic : UIManager.getUIComponents()) {
             uic.draw(g);
             totalDY += uic.height + uic.topMargin;
             g.translate(0, uic.height + uic.topMargin);
         }
-        g.translate(-getWidth(), -totalDY);
+        g.translate(-getWidth(), -totalDY - SideBar.OPTIONS_HEIGHT);
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
-    public void paintComponent(Graphics _g) {
-        brightnessCoefficient = UIManager.brightnessSlider.getVal();
+    private void drawSimulation() {
+        g.translate((double) getWidth() / 2, (double) getHeight() / 2);
+        g.scale(maxDim / 2, -maxDim / 2);
 
-        Graphics2D g = (Graphics2D) _g;
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.clearRect(0, 0, getWidth(), getHeight());
-
+        g.clearRect(-1, -1, 2, 2);
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(-1, -1, 2, 2);
 
-        cameraMatrix = Camera.getTransformationMatrix();
-        cameraPos = new Matrix(new double[][]{{0, -Camera.getDis(), 0}});
-        maxDim = Math.max(getWidth(), getHeight());
         PriorityQueue<Positionable> pq = new PriorityQueue<Positionable>(new Comparator<Positionable>() {
             public int compare(Positionable o1, Positionable o2) {
-                return (int) Math.signum(o2.getDisTo(camera.getPos()) - o1.getDisTo(camera.getPos()));
+                return (int) Math.signum(o2.getDisTo(Camera.getPos()) - o1.getDisTo(Camera.getPos()));
             }
         });
         addGrid(pq);
         addBox(pq);
-        g.setColor(Color.WHITE);
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {
             Object o = pq.poll();
             if (o instanceof FixedPointCharge)
-                drawSphere(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS);
+                Sphere.draw(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS);
             if (o instanceof MovingCharge)
-                drawSphere(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS);
+                Sphere.draw(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS);
             if (o instanceof LineSeg)
-                drawLine(g, (LineSeg) o);
+                Line3D.draw(g, (LineSeg) o);
         }
+        g.scale(2 / maxDim, -2 / maxDim);
+        g.translate((double) -getWidth() / 2, (double) -getHeight() / 2);
+    }
 
-        drawSideBar(g);
+    private void init(Graphics _g) {
+        maxDim = Math.max(getWidth(), getHeight());
+        g = (Graphics2D) _g;
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    }
+
+    public void paintComponent(Graphics _g) {
+        init(_g);
+        drawSimulation();
+        drawSideBar();
     }
 
 }

@@ -2,6 +2,8 @@ package objects;
 
 import math.Matrix;
 
+import static math.LinAlg.EPSILON;
+
 public class Camera implements Positionable {
 
     public static final double FOV = 114.0 / 180 * Math.PI;
@@ -49,7 +51,7 @@ public class Camera implements Positionable {
         setTilt(getTilt() + inc);
     }
 
-    public Matrix getPos() {
+    public static Matrix getPos() {
         return new Matrix(new double[][]{{-Math.sin(theta) * dis * Math.cos(tilt), -Math.cos(theta) * dis * Math.cos(tilt), Math.sin(tilt) * dis}});
     }
 
@@ -76,8 +78,6 @@ public class Camera implements Positionable {
         return res;
     }
 
-    private static final double EPSILON = 0.001;
-
     /**
      * @param pos tranformed 3-d position
      * @return [-1, 1] x [-1, 1]
@@ -87,6 +87,17 @@ public class Camera implements Positionable {
         res.set(0, 0, pos.get(0, 0) / ((pos.get(0, 1) + dis) * Math.tan(FOV / 2)));
         res.set(0, 1, pos.get(0, 2) / ((pos.get(0, 1) + dis) * Math.tan(FOV / 2)));
         return res;
+    }
+
+    public static boolean visible(Matrix point) {
+        if (point == null) return false;
+        return point.get(0, 1) > -getDis() - EPSILON &&
+                Math.abs(point.get(0, 2)) < Math.tan(FOV / 2) * (getDis() + point.get(0, 1)) + EPSILON &&
+                Math.abs(point.get(0, 0)) < Math.tan(FOV / 2) * (getDis() + point.get(0, 1)) + EPSILON;
+    }
+
+    public static Matrix getTransformedPos() {
+        return new Matrix(new double[][]{{0, -getDis(), 0}});
     }
 
 }

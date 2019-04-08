@@ -1,7 +1,6 @@
 package main;
 
 import UI.MouseUI;
-import objects.Camera;
 
 import javax.swing.*;
 
@@ -11,7 +10,6 @@ public class WindowManager {
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
 
-    public static Camera camera;
     public static JFrame frame;
     public static Painter painter;
     public static MouseUI mouseUI;
@@ -21,15 +19,16 @@ public class WindowManager {
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocationRelativeTo(null);
 
-        camera = new Camera();
-        painter = new Painter(camera);
+        painter = new Painter();
         frame.add(painter);
 
         mouseUI = new MouseUI();
         painter.addMouseMotionListener(mouseUI);
         painter.addMouseListener(mouseUI);
         painter.addMouseWheelListener(mouseUI);
+    }
 
+    public static void show() {
         frame.setVisible(true);
     }
 

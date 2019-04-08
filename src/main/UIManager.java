@@ -1,9 +1,7 @@
 package main;
 
-import UI.Header;
-import UI.MouseUI;
-import UI.Slider;
-import UI.UIComponent;
+import UI.*;
+import javafx.geometry.Side;
 import objects.MovingCharge;
 
 import java.awt.*;
@@ -13,7 +11,15 @@ import java.util.List;
 
 public class UIManager {
 
-    private static List<UIComponent> uiComponents;
+    private static final Font H1 = new Font("Havana", Font.BOLD, 15);
+    private static final Font H2 = new Font("Havana", Font.PLAIN, 12);
+
+    private static List<UIComponent> editUI;
+    private static List<UIComponent> settingsUI;
+
+    public static Header uiHeader;
+    public static Header displayHeader;
+    public static Header simulationHeader;
 
     public static Header brightnessHeader;
     public static Header mouseWheelSensitivityHeader;
@@ -31,45 +37,67 @@ public class UIManager {
     public static Slider speedSlider;
     public static Slider gridSizeSlider;
 
-    public static void init() {
-        uiComponents = new ArrayList<UIComponent>();
-        brightnessHeader = new Header("Brightness", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(brightnessHeader);
+    private static void generateHeaders() {
+        uiHeader = new Header("User Interface", H1, Color.WHITE, Header.CENTER);
+        displayHeader = new Header("Display", H1, Color.WHITE, Header.CENTER);
+        simulationHeader = new Header("Simulation", H1, Color.WHITE, Header.CENTER);
+
+        brightnessHeader = new Header("Brightness", H2, Color.WHITE);
+        mouseWheelSensitivityHeader = new Header("Mouse Wheel Sensitivity", H2, Color.WHITE);
+        xSensitivityHeader = new Header("X Sensitivity", H2, Color.WHITE);
+        ySensitivityHeader = new Header("Y Sensitivity", H2, Color.WHITE);
+        movingChargeHeader = new Header("Number of Moving Charges", H2, Color.WHITE);
+        speedHeader = new Header("Speed", H2, Color.WHITE);
+        gridSizeHeader = new Header("Grid Size", H2, Color.WHITE);
+    }
+
+    private static void generateSliders() {
         brightnessSlider = new Slider(Painter.MIN_BRIGHTNESS, Painter.MAX_BRIGHTNESS, Slider.LINEAR);
-        uiComponents.add(brightnessSlider);
-
-        mouseWheelSensitivityHeader = new Header("Mouse Wheel Sensitivity", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(mouseWheelSensitivityHeader);
         mouseWheelSensitivitySlider = new Slider(MouseUI.MIN_WHEEL_SENSITIVITY, MouseUI.MAX_WHEEL_SENSITIVITY, Slider.LOGARITHMIC);
-        uiComponents.add(mouseWheelSensitivitySlider);
-
-        xSensitivityHeader = new Header("X Sensitivity", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(xSensitivityHeader);
         xSensitivitySlider = new Slider(MouseUI.MIN_X_SENSITIVITY, MouseUI.MAX_X_SENSITIVITY, Slider.LOGARITHMIC);
-        uiComponents.add(xSensitivitySlider);
-
-        ySensitivityHeader = new Header("Y Sensitivity", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(ySensitivityHeader);
         ySensitivitySlider = new Slider(MouseUI.MIN_Y_SENSITIVITY, MouseUI.MAX_Y_SENSITIVITY, Slider.LOGARITHMIC);
-        uiComponents.add(ySensitivitySlider);
-
-        movingChargeHeader = new Header("Number of Moving Charges", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(movingChargeHeader);
         movingChargeSlider = new Slider(SimulationManager.MIN_MOVING_CHARGES, SimulationManager.MAX_MOVING_CHARGES, Slider.LOGARITHMIC);
-        uiComponents.add(movingChargeSlider);
-
-        speedHeader = new Header("Speed", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(speedHeader);
         speedSlider = new Slider(MovingCharge.MIN_SPEED, MovingCharge.MAX_SPEED, Slider.LINEAR);
-        uiComponents.add(speedSlider);
-
-        gridSizeHeader = new Header("Grid Size", new Font("Havana", Font.BOLD, 12), Color.WHITE);
-        uiComponents.add(gridSizeHeader);
         gridSizeSlider = new Slider(SimulationManager.MIN_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR);
-        uiComponents.add(gridSizeSlider);
+    }
+
+    private static void generateComponents() {
+        generateHeaders();
+        generateSliders();
+    }
+
+    private static void orderComponents() {
+        settingsUI.add(uiHeader);
+        settingsUI.add(xSensitivityHeader);
+        settingsUI.add(xSensitivitySlider);
+        settingsUI.add(ySensitivityHeader);
+        settingsUI.add(ySensitivitySlider);
+        settingsUI.add(mouseWheelSensitivityHeader);
+        settingsUI.add(mouseWheelSensitivitySlider);
+
+        settingsUI.add(displayHeader);
+        settingsUI.add(brightnessHeader);
+        settingsUI.add(brightnessSlider);
+        settingsUI.add(gridSizeHeader);
+        settingsUI.add(gridSizeSlider);
+
+        settingsUI.add(simulationHeader);
+        settingsUI.add(movingChargeHeader);
+        settingsUI.add(movingChargeSlider);
+        settingsUI.add(speedHeader);
+        settingsUI.add(speedSlider);
+    }
+
+    public static void init() {
+        editUI = new ArrayList<UIComponent>();
+        settingsUI = new ArrayList<UIComponent>();
+        generateComponents();
+        orderComponents();
     }
 
     public static List<UIComponent> getUIComponents() {
-        return uiComponents;
+        if (SideBar.currentOption == 1) return settingsUI;
+        else return editUI;
+
     }
 }

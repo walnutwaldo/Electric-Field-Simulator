@@ -4,7 +4,6 @@ import main.UIManager;
 import main.WindowManager;
 import objects.Camera;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -26,6 +25,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     public boolean onTab;
     public boolean onSlider;
+    public boolean onOption;
+    public int currOption;
     public Slider currentSlider;
 
     private double clamp(double a, double b, double c) {
@@ -60,9 +61,13 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         int screenWidth = WindowManager.painter.getWidth();
         int screenHeight = WindowManager.painter.getHeight();
         onTab = newX < screenWidth && Math.pow(newX - screenWidth, 2) + Math.pow(newY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
-        if (e.getX() >= screenWidth) {
-            int xPos = e.getX();
-            int yPos = e.getY();
+        onOption = false;
+        if (newX >= screenWidth && newY <= SideBar.OPTIONS_HEIGHT) {
+            currOption = (newX - screenWidth) / SideBar.OPTIONS_HEIGHT;
+            if (currOption != SideBar.currentOption && currOption < SideBar.NUM_OPTIONS) onOption = true;
+        } else if (newX >= screenWidth && newY > SideBar.OPTIONS_HEIGHT) {
+            int xPos = newX;
+            int yPos = newY - SideBar.OPTIONS_HEIGHT;
             xPos -= screenWidth;
             onSlider = false;
             for (UIComponent uic : UIManager.getUIComponents()) {
@@ -77,7 +82,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         if (newX >= screenWidth - TAB_ACTIVATION_DIS || newX <= TAB_ACTIVATION_DIS || newY <= TAB_ACTIVATION_DIS || newY >= screenHeight - TAB_ACTIVATION_DIS || onTab) {
             SideBar.showTab();
         } else if (newX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
-        if (onTab || onSlider) WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        if (onTab || onSlider || onOption)
+            WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         lastX = newX;
         lastY = newY;
@@ -91,9 +97,17 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public void mousePressed(MouseEvent e) {
         int screenWidth = WindowManager.painter.getWidth();
         int screenHeight = WindowManager.painter.getHeight();
+        if (e.getX() >= screenWidth && e.getY() <= SideBar.OPTIONS_HEIGHT) {
+            currOption = (e.getX() - screenWidth) / SideBar.OPTIONS_HEIGHT;
+            if (currOption < SideBar.NUM_OPTIONS) {
+                SideBar.currentOption = currOption;
+                onOption = false;
+                WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+        }
         if (e.getX() >= screenWidth) {
             int xPos = e.getX();
-            int yPos = e.getY();
+            int yPos = e.getY() - SideBar.OPTIONS_HEIGHT;
             xPos -= screenWidth;
             for (UIComponent uic : UIManager.getUIComponents()) {
                 if (uic instanceof Slider && (((Slider) uic).onBar(xPos, yPos) || ((Slider) uic).onSlider(xPos, yPos))) {
