@@ -1,6 +1,7 @@
 package math;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 
 public class Conics {
@@ -37,6 +38,7 @@ public class Conics {
 
     public static void drawEllipse(Graphics2D g, Matrix ellipse) {
         if (!isEllipse(ellipse)) return;
+        AffineTransform at = g.getTransform();
         Matrix ellipseData = getEllipseData(ellipse);
         double theta = ellipseData.get(0, 0);
         double a = ellipseData.get(0, 1);
@@ -45,7 +47,7 @@ public class Conics {
         double k = ellipseData.get(0, 4);
         g.rotate(theta, 0, 0);
         g.fill(new Ellipse2D.Double(h - a, k - b, 2 * a, 2 * b));
-        g.rotate(-theta, 0, 0);
+        g.setTransform(at);
     }
 
 }

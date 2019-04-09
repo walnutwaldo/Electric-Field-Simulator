@@ -11,10 +11,10 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     private int lastX, lastY;
 
-    public static final double MIN_X_SENSITIVITY = 0.001;
-    public static final double MAX_X_SENSITIVITY = 0.1;
-    public static final double MIN_Y_SENSITIVITY = 0.001;
-    public static final double MAX_Y_SENSITIVITY = 0.1;
+    public static final double MIN_X_SENSITIVITY = 0.0005;
+    public static final double MAX_X_SENSITIVITY = 0.2;
+    public static final double MIN_Y_SENSITIVITY = 0.0005;
+    public static final double MAX_Y_SENSITIVITY = 0.2;
     public static final double MIN_WHEEL_SENSITIVITY = 0.05;
     public static final double MAX_WHEEL_SENSITIVITY = 10;
 
@@ -87,8 +87,6 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         }
         if (onTab || onSlider || onOption) {
             WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        } else if (onSimulation) {
-            WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         } else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 

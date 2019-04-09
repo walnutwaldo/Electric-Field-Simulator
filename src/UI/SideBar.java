@@ -9,6 +9,9 @@ public class SideBar {
     public static int width = 0;
 
     public static final int NUM_OPTIONS = 4;
+    public static final int EDIT = 0;
+    public static final int SETTINGS = 3;
+
     public static int currentOption = 0;
 
     public static boolean showingTab = false;

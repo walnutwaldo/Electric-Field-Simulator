@@ -7,12 +7,14 @@ import objects.Camera;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 import objects.Positionable;
+import shapes.Gear;
 import shapes.Line3D;
 import shapes.Sphere;
 import shapes.TabArrow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -89,6 +91,7 @@ public class Painter extends JPanel {
     }
 
     private void drawTab() {
+        AffineTransform at = g.getTransform();
         g.setClip(0, 0, getWidth(), getHeight());
         g.setColor(Color.GRAY);
         double tabProtrusion = SideBar.getTabProtrusion();
@@ -100,24 +103,32 @@ public class Painter extends JPanel {
         } else g.setColor(new Color(200, 200, 200));
         if (SideBar.showingBar) TabArrow.draw(g, TabArrow.RIGHT);
         else TabArrow.draw(g, TabArrow.LEFT);
-        g.translate(-getWidth() - SideBar.TAB_RADIUS + tabProtrusion, -getHeight() / 2);
+        g.setTransform(at);
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
     private void drawOptionsBar() {
+        AffineTransform at = g.getTransform();
         g.setColor(new Color(100, 100, 100));
         g.fillRect(0, 0, SideBar.width, getHeight());
         g.setColor(new Color(130, 130, 130));
         g.fillRect(SideBar.currentOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
         if (WindowManager.mouseUI.onOption) {
-            if (WindowManager.mouseUI.downOption) g.setColor(new Color(120, 120, 120));
-            else g.setColor(new Color(110, 110, 110));
+            if (WindowManager.mouseUI.downOption) g.setColor(new Color(80, 80, 80));
+            else g.setColor(new Color(90, 90, 90));
             g.fillRect(WindowManager.mouseUI.currOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
         }
+        for (int i = 0; i < SideBar.NUM_OPTIONS; i++) {
+            g.setColor(Color.WHITE);
+            if (i == SideBar.SETTINGS) Gear.draw(g);
+            g.translate(SideBar.OPTIONS_HEIGHT, 0);
+        }
+        g.setTransform(at);
     }
 
     private void drawSideBar() {
         drawTab();
+        AffineTransform at = g.getTransform();
         g.setClip(getWidth(), 0, SideBar.width, getHeight());
         g.translate(getWidth(), 0);
         drawOptionsBar();
@@ -130,11 +141,12 @@ public class Painter extends JPanel {
             totalDY += uic.height + uic.topMargin;
             g.translate(0, uic.height + uic.topMargin);
         }
-        g.translate(-getWidth(), -totalDY - SideBar.OPTIONS_HEIGHT);
+        g.setTransform(at);
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
     private void drawSimulation() {
+        AffineTransform at = g.getTransform();
         g.translate((double) getWidth() / 2, (double) getHeight() / 2);
         g.scale(maxDim / 2, -maxDim / 2);
 
@@ -160,8 +172,7 @@ public class Painter extends JPanel {
             if (o instanceof LineSeg)
                 Line3D.draw(g, (LineSeg) o);
         }
-        g.scale(2 / maxDim, -2 / maxDim);
-        g.translate((double) -getWidth() / 2, (double) -getHeight() / 2);
+        g.setTransform(at);
     }
 
     private void init(Graphics _g) {

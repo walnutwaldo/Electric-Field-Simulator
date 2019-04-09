@@ -3,6 +3,7 @@ package shapes;
 import UI.SideBar;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 public class TabArrow {
@@ -22,8 +23,9 @@ public class TabArrow {
     public static void draw(Graphics2D g, int direction) {
         if (direction != LEFT && direction != RIGHT)
             throw new IllegalArgumentException("direction is not valid");
-        g.translate(-SHIFT[direction], 0);
         Shape initClip = g.getClip();
+        AffineTransform at = g.getTransform();
+        g.translate(-SHIFT[direction], 0);
         g.setClip(new Rectangle2D.Double(-WIDTH, -HEIGHT / 2, WIDTH, HEIGHT));
         g.rotate(Math.PI / 4, 0, 0);
         if (direction == LEFT) {
@@ -34,9 +36,8 @@ public class TabArrow {
             g.fill(new Rectangle2D.Double(-WIDTH * Math.sqrt(2), 0, WIDTH * Math.sqrt(2), THICKNESS / Math.sqrt(2)));
             g.fill(new Rectangle2D.Double(-THICKNESS / Math.sqrt(2), 0, THICKNESS / Math.sqrt(2), WIDTH * Math.sqrt(2)));
         }
-        g.rotate(-Math.PI / 4, 0, 0);
+        g.setTransform(at);
         g.setClip(initClip);
-        g.translate(SHIFT[direction], 0);
     }
 
 }

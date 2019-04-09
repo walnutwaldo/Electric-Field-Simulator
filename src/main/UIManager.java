@@ -1,11 +1,9 @@
 package main;
 
 import UI.*;
-import javafx.geometry.Side;
 import objects.MovingCharge;
 
 import java.awt.*;
-import java.net.SocketImpl;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,8 +94,8 @@ public class UIManager {
     }
 
     public static List<UIComponent> getUIComponents() {
-        if (SideBar.currentOption == 1) return settingsUI;
-        else return editUI;
-
+        if (SideBar.currentOption == SideBar.SETTINGS) return settingsUI;
+        else if (SideBar.currentOption == SideBar.EDIT) return editUI;
+        return new ArrayList<UIComponent>();
     }
 }
