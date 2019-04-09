@@ -8,9 +8,10 @@ public class SideBar {
     private static final double TAB_COEFFICIENT = 5;
     public static int width = 0;
 
-    public static final int NUM_OPTIONS = 4;
+    public static final int NUM_OPTIONS = 3;
     public static final int EDIT = 0;
-    public static final int SETTINGS = 3;
+    public static final int SETTINGS = 1;
+    public static final int INFO = 2;
 
     public static int currentOption = 0;
 

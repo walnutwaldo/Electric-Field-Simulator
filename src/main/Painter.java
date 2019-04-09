@@ -7,10 +7,7 @@ import objects.Camera;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 import objects.Positionable;
-import shapes.Gear;
-import shapes.Line3D;
-import shapes.Sphere;
-import shapes.TabArrow;
+import shapes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -121,6 +118,8 @@ public class Painter extends JPanel {
         for (int i = 0; i < SideBar.NUM_OPTIONS; i++) {
             g.setColor(Color.WHITE);
             if (i == SideBar.SETTINGS) Gear.draw(g);
+            else if (i == SideBar.EDIT) Pencil.draw(g);
+            else if (i == SideBar.INFO) InfoIcon.draw(g);
             g.translate(SideBar.OPTIONS_HEIGHT, 0);
         }
         g.setTransform(at);

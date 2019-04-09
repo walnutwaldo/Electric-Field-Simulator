@@ -11,8 +11,10 @@ public class UIManager {
 
     private static final Font H1 = new Font("Havana", Font.BOLD, 15);
     private static final Font H2 = new Font("Havana", Font.PLAIN, 12);
+    private static final Font INFO_FONT = new Font("Courier New", Font.PLAIN, 12);
 
     private static List<UIComponent> editUI;
+    private static List<UIComponent> infoUI;
     private static List<UIComponent> settingsUI;
 
     public static Header uiHeader;
@@ -86,16 +88,30 @@ public class UIManager {
         settingsUI.add(speedSlider);
     }
 
+    private static void addInfo() {
+        infoUI.add(new Header("Made by Walden Yan", INFO_FONT, Color.WHITE));
+        infoUI.add(new Header("Avon High School, CT", INFO_FONT, Color.WHITE));
+        infoUI.add(new Header("AP Computer Science Principles", INFO_FONT, Color.WHITE));
+        Header h = new Header("Create Project (2019)", INFO_FONT, Color.WHITE);
+        h.topMargin = 0;
+        infoUI.add(h);
+        infoUI.add(new Header("", INFO_FONT, Color.WHITE));
+        infoUI.add(new Header("Language: Java", INFO_FONT, Color.WHITE));
+    }
+
     public static void init() {
         editUI = new ArrayList<UIComponent>();
         settingsUI = new ArrayList<UIComponent>();
+        infoUI = new ArrayList<UIComponent>();
         generateComponents();
         orderComponents();
+        addInfo();
     }
 
     public static List<UIComponent> getUIComponents() {
         if (SideBar.currentOption == SideBar.SETTINGS) return settingsUI;
         else if (SideBar.currentOption == SideBar.EDIT) return editUI;
+        else if (SideBar.currentOption == SideBar.INFO) return infoUI;
         return new ArrayList<UIComponent>();
     }
 }
