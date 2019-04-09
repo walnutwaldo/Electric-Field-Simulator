@@ -9,7 +9,6 @@ import java.awt.event.*;
 
 public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelListener {
 
-    private boolean mouseDown;
     private int lastX, lastY;
 
     public static final double MIN_X_SENSITIVITY = 0.001;
@@ -21,11 +20,16 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     private static final int TAB_ACTIVATION_DIS = 5;
 
-    private boolean downOnTab;
+    public boolean downSimulation;
+    public boolean downTab;
+    public boolean downSlider;
+    public boolean downOption;
 
+    public boolean onSimulation;
     public boolean onTab;
     public boolean onSlider;
     public boolean onOption;
+
     public int currOption;
     public Slider currentSlider;
 
@@ -33,16 +37,73 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         return Math.max(b, Math.min(a, c));
     }
 
+    private boolean down() {
+        return downOption || downTab || downSimulation || downSlider;
+    }
+
+    private void updateTab(MouseEvent e) {
+        if (down()) {
+            SideBar.hideTab();
+            return;
+        }
+        int newX = e.getX();
+        int newY = e.getY();
+        int screenWidth = WindowManager.painter.getWidth();
+        int screenHeight = WindowManager.painter.getHeight();
+        boolean onTabZone = Math.pow(newX - screenWidth, 2) + Math.pow(newY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
+        if (newX >= screenWidth - TAB_ACTIVATION_DIS || newX <= TAB_ACTIVATION_DIS || newY <= TAB_ACTIVATION_DIS || newY >= screenHeight - TAB_ACTIVATION_DIS || onTabZone) {
+            SideBar.showTab();
+        } else if (newX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
+    }
+
+    private void updateOns(MouseEvent e) {
+        int newX = e.getX();
+        int newY = e.getY();
+        int screenWidth = WindowManager.painter.getWidth();
+        int screenHeight = WindowManager.painter.getHeight();
+        if (!down() || downTab)
+            onTab = newX < screenWidth && Math.pow(newX - screenWidth - SideBar.TAB_RADIUS + SideBar.getTabProtrusion(), 2) + Math.pow(newY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
+        if (!down() || downSimulation)
+            onSimulation = newX < screenWidth && !onTab;
+        onOption = false;
+        onSlider = false;
+        if (newX >= screenWidth && newY <= SideBar.OPTIONS_HEIGHT) {
+            int newOption = (newX - screenWidth) / SideBar.OPTIONS_HEIGHT;
+            if (!down()) currOption = newOption;
+            if (currOption < SideBar.NUM_OPTIONS && currOption == newOption && (!down() || downOption) && currOption != SideBar.currentOption)
+                onOption = true;
+        } else if (newX >= screenWidth && newY > SideBar.OPTIONS_HEIGHT) {
+            int xPos = newX;
+            int yPos = newY - SideBar.OPTIONS_HEIGHT;
+            xPos -= screenWidth;
+            for (UIComponent uic : UIManager.getUIComponents()) {
+                if (uic instanceof Slider && (((Slider) uic).onSlider(xPos, yPos) || ((Slider) uic).onBar(xPos, yPos))) {
+                    if (!down()) currentSlider = (Slider) uic;
+                    if (uic == currentSlider && (!down() || downSlider)) onSlider = true;
+                    break;
+                }
+                yPos -= uic.topMargin + uic.height;
+            }
+        }
+        if (onTab || onSlider || onOption) {
+            WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        } else if (onSimulation) {
+            WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        } else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+
     @Override
     public void mouseDragged(MouseEvent e) {
         int newX = e.getX();
         int newY = e.getY();
         int screenWidth = WindowManager.painter.getWidth();
-        if (onSlider)
+        updateOns(e);
+        updateTab(e);
+        if (downSlider)
             currentSlider.sliderLoc =
                     clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
                             0, 1);
-        if (mouseDown) {
+        if (downSimulation) {
             int dx = newX - lastX;
             int dy = newY - lastY;
             lastX = e.getX();
@@ -58,33 +119,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public void mouseMoved(MouseEvent e) {
         int newX = e.getX();
         int newY = e.getY();
-        int screenWidth = WindowManager.painter.getWidth();
-        int screenHeight = WindowManager.painter.getHeight();
-        onTab = newX < screenWidth && Math.pow(newX - screenWidth, 2) + Math.pow(newY - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
-        onOption = false;
-        if (newX >= screenWidth && newY <= SideBar.OPTIONS_HEIGHT) {
-            currOption = (newX - screenWidth) / SideBar.OPTIONS_HEIGHT;
-            if (currOption != SideBar.currentOption && currOption < SideBar.NUM_OPTIONS) onOption = true;
-        } else if (newX >= screenWidth && newY > SideBar.OPTIONS_HEIGHT) {
-            int xPos = newX;
-            int yPos = newY - SideBar.OPTIONS_HEIGHT;
-            xPos -= screenWidth;
-            onSlider = false;
-            for (UIComponent uic : UIManager.getUIComponents()) {
-                if (uic instanceof Slider && (((Slider) uic).onSlider(xPos, yPos) || ((Slider) uic).onBar(xPos, yPos))) {
-                    onSlider = true;
-                    currentSlider = (Slider) uic;
-                    break;
-                }
-                yPos -= uic.topMargin + uic.height;
-            }
-        }
-        if (newX >= screenWidth - TAB_ACTIVATION_DIS || newX <= TAB_ACTIVATION_DIS || newY <= TAB_ACTIVATION_DIS || newY >= screenHeight - TAB_ACTIVATION_DIS || onTab) {
-            SideBar.showTab();
-        } else if (newX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
-        if (onTab || onSlider || onOption)
-            WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        updateOns(e);
+        updateTab(e);
         lastX = newX;
         lastY = newY;
     }
@@ -95,51 +131,40 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mousePressed(MouseEvent e) {
+        updateOns(e);
         int screenWidth = WindowManager.painter.getWidth();
-        int screenHeight = WindowManager.painter.getHeight();
-        if (e.getX() >= screenWidth && e.getY() <= SideBar.OPTIONS_HEIGHT) {
-            currOption = (e.getX() - screenWidth) / SideBar.OPTIONS_HEIGHT;
-            if (currOption < SideBar.NUM_OPTIONS) {
-                SideBar.currentOption = currOption;
-                onOption = false;
-                WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            }
-        }
-        if (e.getX() >= screenWidth) {
-            int xPos = e.getX();
-            int yPos = e.getY() - SideBar.OPTIONS_HEIGHT;
-            xPos -= screenWidth;
-            for (UIComponent uic : UIManager.getUIComponents()) {
-                if (uic instanceof Slider && (((Slider) uic).onBar(xPos, yPos) || ((Slider) uic).onSlider(xPos, yPos))) {
-                    onSlider = true;
-                    currentSlider = (Slider) uic;
-                    currentSlider.sliderLoc =
-                            clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
-                                    0, 1);
-                    break;
-                }
-                yPos -= uic.topMargin + uic.height;
-            }
-        } else {
-            mouseDown = true;
-        }
-        downOnTab = e.getX() < screenWidth && Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2);
+        downOption = onOption;
+        downSlider = onSlider;
+        downTab = onTab;
+        downSimulation = onSimulation;
+        if (downSlider)
+            currentSlider.sliderLoc =
+                    clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
+                            0, 1);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        mouseDown = false;
-        onSlider = false;
-        int screenWidth = WindowManager.painter.getWidth();
-        int screenHeight = WindowManager.painter.getHeight();
-        if (downOnTab && e.getX() < screenWidth && Math.pow(e.getX() - screenWidth, 2) + Math.pow(e.getY() - screenHeight / 2, 2) <= Math.pow(SideBar.TAB_RADIUS, 2)) {
-            SideBar.toggle();
+        updateOns(e);
+        downSimulation = false;
+        downSlider = false;
+        if (downOption) {
+            if (onOption) SideBar.currentOption = currOption;
+            downOption = false;
+            onOption = false;
         }
+        if (downTab) {
+            if (onTab) SideBar.toggle();
+            downTab = false;
+            onTab = false;
+        }
+        updateOns(e);
+        updateTab(e);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        updateTab(e);
     }
 
     @Override

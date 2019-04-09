@@ -32,8 +32,10 @@ public class Slider extends UIComponent {
         g.setColor(Color.WHITE);
         g.fillRect(leftMargin, topMargin, width, height);
         g.setColor(new Color(180, 180, 180));
-        if (WindowManager.mouseUI.onSlider && this == WindowManager.mouseUI.currentSlider)
-            g.setColor(new Color(200, 200, 200));
+        if (this == WindowManager.mouseUI.currentSlider) {
+            if (WindowManager.mouseUI.downSlider) g.setColor(new Color(220, 220, 220));
+            else if (WindowManager.mouseUI.onSlider) g.setColor(new Color(200, 200, 200));
+        }
         g.fillRect(leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2, topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2, SLIDER_WIDTH, SLIDER_HEIGHT);
     }
 

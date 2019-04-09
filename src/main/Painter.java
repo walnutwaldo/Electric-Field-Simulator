@@ -94,8 +94,10 @@ public class Painter extends JPanel {
         double tabProtrusion = SideBar.getTabProtrusion();
         g.translate(getWidth() + SideBar.TAB_RADIUS - tabProtrusion, getHeight() / 2);
         g.fill(new Ellipse2D.Double(-SideBar.TAB_RADIUS, -SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS, 2 * SideBar.TAB_RADIUS));
-        if (WindowManager.mouseUI.onTab) g.setColor(new Color(220, 220, 220));
-        else g.setColor(new Color(200, 200, 200));
+        if (WindowManager.mouseUI.onTab) {
+            if (WindowManager.mouseUI.downTab) g.setColor(new Color(240, 240, 240));
+            else g.setColor(new Color(220, 220, 220));
+        } else g.setColor(new Color(200, 200, 200));
         if (SideBar.showingBar) TabArrow.draw(g, TabArrow.RIGHT);
         else TabArrow.draw(g, TabArrow.LEFT);
         g.translate(-getWidth() - SideBar.TAB_RADIUS + tabProtrusion, -getHeight() / 2);
@@ -103,11 +105,13 @@ public class Painter extends JPanel {
     }
 
     private void drawOptionsBar() {
+        g.setColor(new Color(100, 100, 100));
         g.fillRect(0, 0, SideBar.width, getHeight());
-        g.setColor(Color.GRAY);
+        g.setColor(new Color(130, 130, 130));
         g.fillRect(SideBar.currentOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
         if (WindowManager.mouseUI.onOption) {
-            g.setColor(new Color(110, 110, 110));
+            if (WindowManager.mouseUI.downOption) g.setColor(new Color(120, 120, 120));
+            else g.setColor(new Color(110, 110, 110));
             g.fillRect(WindowManager.mouseUI.currOption * SideBar.OPTIONS_HEIGHT, 0, SideBar.OPTIONS_HEIGHT, SideBar.OPTIONS_HEIGHT + 1);
         }
     }
@@ -116,10 +120,9 @@ public class Painter extends JPanel {
         drawTab();
         g.setClip(getWidth(), 0, SideBar.width, getHeight());
         g.translate(getWidth(), 0);
-        g.setColor(new Color(100, 100, 100));
         drawOptionsBar();
         g.translate(0, SideBar.OPTIONS_HEIGHT);
-        g.setColor(Color.GRAY);
+        g.setColor(new Color(130, 130, 130));
         g.fillRect(0, 0, SideBar.width, getHeight() - SideBar.OPTIONS_HEIGHT);
         int totalDY = 0;
         for (UIComponent uic : UIManager.getUIComponents()) {
