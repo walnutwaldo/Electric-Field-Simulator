@@ -59,6 +59,21 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         } else if (newX <= screenWidth - SideBar.TAB_RADIUS) SideBar.hideTab();
     }
 
+    private void processUIC(UIComponent uic, int xPos, int yPos) {
+        if (uic instanceof Slider && (((Slider) uic).onSlider(xPos, yPos) || ((Slider) uic).onBar(xPos, yPos))) {
+            if (!down()) currentSlider = (Slider) uic;
+            if (uic == currentSlider && (!down() || downSlider)) onSlider = true;
+        }
+        if (uic instanceof Checkbox && ((Checkbox) uic).onBox(xPos, yPos)) {
+            if (!down()) currentCheckbox = (Checkbox) uic;
+            if (uic == currentCheckbox && (!down() || downCheckbox)) onCheckbox = true;
+        }
+        if (uic instanceof HorizontalLayout) for (UIComponent uic2 : ((HorizontalLayout) uic).getComponents()) {
+            processUIC(uic2, xPos, yPos);
+            xPos -= uic2.leftMargin + uic2.width;
+        }
+    }
+
     private void updateOns(MouseEvent e) {
         int newX = e.getX();
         int newY = e.getY();
@@ -81,16 +96,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             int yPos = newY - SideBar.OPTIONS_HEIGHT;
             xPos -= screenWidth;
             for (UIComponent uic : UIManager.getUIComponents()) {
-                if (uic instanceof Slider && (((Slider) uic).onSlider(xPos, yPos) || ((Slider) uic).onBar(xPos, yPos))) {
-                    if (!down()) currentSlider = (Slider) uic;
-                    if (uic == currentSlider && (!down() || downSlider)) onSlider = true;
-                    break;
-                }
-                if (uic instanceof Checkbox && ((Checkbox) uic).onBox(xPos, yPos)) {
-                    if (!down()) currentCheckbox = (Checkbox) uic;
-                    if (uic == currentCheckbox && (!down() || downCheckbox)) onCheckbox = true;
-                    break;
-                }
+                processUIC(uic, xPos, yPos);
                 yPos -= uic.topMargin + uic.height;
             }
         }

@@ -10,6 +10,7 @@ public class Checkbox extends UIComponent {
 
     private static final int GAP = 5;
     private static final int BOX_MARGIN = 3;
+    private static final int WIDTH = 90;
 
     public static final int HEIGHT = 15;
 
@@ -23,6 +24,7 @@ public class Checkbox extends UIComponent {
         text = _text;
         font = _font;
         checked = defaultChecked;
+        width = WIDTH;
     }
 
     @Override

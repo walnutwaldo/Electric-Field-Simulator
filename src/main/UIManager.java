@@ -24,7 +24,6 @@ public class UIManager {
     public static Header ySensitivityHeader;
     public static Header movingChargeHeader;
     public static Header speedHeader;
-    public static Header gridSizeHeader;
 
     public static Slider brightnessSlider;
     public static Slider mouseWheelSensitivitySlider;
@@ -36,6 +35,7 @@ public class UIManager {
 
     public static Checkbox gridCheckbox;
     public static Checkbox boxCheckbox;
+    private static HorizontalLayout checkboxesLayout;
 
     private static void generateHeaders() {
         uiHeader = new Header("User Interface", H1, Color.WHITE, Header.CENTER);
@@ -48,7 +48,6 @@ public class UIManager {
         ySensitivityHeader = new Header("Y Sensitivity", H2, Color.WHITE);
         movingChargeHeader = new Header("Number of Moving Charges", H2, Color.WHITE);
         speedHeader = new Header("Speed", H2, Color.WHITE);
-        gridSizeHeader = new Header("Grid Size", H2, Color.WHITE);
     }
 
     private static void generateSliders() {
@@ -64,6 +63,9 @@ public class UIManager {
     private static void generateCheckboxes() {
         gridCheckbox = new Checkbox("Grid", H2, true);
         boxCheckbox = new Checkbox("Box", H2, true);
+        checkboxesLayout = new HorizontalLayout();
+        checkboxesLayout.add(gridCheckbox);
+        checkboxesLayout.add(boxCheckbox);
     }
 
     private static void generateComponents() {
@@ -73,7 +75,7 @@ public class UIManager {
     }
 
     private static List<UIComponent> createSettingsUI() {
-        List<UIComponent> settingsUI = new ArrayList<UIComponent>();
+        List<UIComponent> settingsUI = new ArrayList<UIComponent>(20);
         settingsUI.add(uiHeader);
         settingsUI.add(xSensitivityHeader);
         settingsUI.add(xSensitivitySlider);
@@ -85,10 +87,9 @@ public class UIManager {
         settingsUI.add(displayHeader);
         settingsUI.add(brightnessHeader);
         settingsUI.add(brightnessSlider);
-        settingsUI.add(gridSizeHeader);
-        settingsUI.add(gridSizeSlider);
-        settingsUI.add(gridCheckbox);
-        settingsUI.add(boxCheckbox);
+        settingsUI.add(checkboxesLayout);
+        if (gridCheckbox.isChecked() || boxCheckbox.isChecked())
+            settingsUI.add(gridSizeSlider);
 
         settingsUI.add(simulationHeader);
         settingsUI.add(movingChargeHeader);
