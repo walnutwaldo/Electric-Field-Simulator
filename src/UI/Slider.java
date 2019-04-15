@@ -6,9 +6,6 @@ import java.awt.*;
 
 public class Slider extends UIComponent {
 
-    public static final int TOP_MARGIN = 10;
-    public static final int LEFT_MARGIN = 10;
-    public static final int WIDTH = SideBar.MAX_WIDTH - 20;
     public static final int HEIGHT = 7;
     public static final int LINEAR = 0;
     public static final int LOGARITHMIC = 1;
@@ -21,7 +18,7 @@ public class Slider extends UIComponent {
     private int type;
 
     public Slider(double _min, double _max, int _type) {
-        super(TOP_MARGIN, LEFT_MARGIN, WIDTH, HEIGHT);
+        super(HEIGHT);
         sliderLoc = 0.5;
         min = _min;
         max = _max;
@@ -36,7 +33,7 @@ public class Slider extends UIComponent {
             if (WindowManager.mouseUI.downSlider) g.setColor(new Color(220, 220, 220));
             else if (WindowManager.mouseUI.onSlider) g.setColor(new Color(200, 200, 200));
         }
-        g.fillRect(leftMargin + (int) (sliderLoc * WIDTH) - SLIDER_WIDTH / 2, topMargin + HEIGHT / 2 - SLIDER_HEIGHT / 2, SLIDER_WIDTH, SLIDER_HEIGHT);
+        g.fillRect(leftMargin + (int) (sliderLoc * width) - SLIDER_WIDTH / 2, topMargin + height / 2 - SLIDER_HEIGHT / 2, SLIDER_WIDTH, SLIDER_HEIGHT);
     }
 
     private static final int LEEWAY = 1;
@@ -46,13 +43,13 @@ public class Slider extends UIComponent {
     }
 
     public boolean onSlider(int x, int y) {
-        return between(x - leftMargin - sliderLoc * WIDTH, -SLIDER_WIDTH / 2, SLIDER_WIDTH / 2) &&
-                between(y - topMargin - HEIGHT / 2, -SLIDER_HEIGHT / 2, SLIDER_HEIGHT / 2);
+        return between(x - leftMargin - sliderLoc * width, -SLIDER_WIDTH / 2, SLIDER_WIDTH / 2) &&
+                between(y - topMargin - height / 2, -SLIDER_HEIGHT / 2, SLIDER_HEIGHT / 2);
     }
 
     public boolean onBar(int x, int y) {
-        return between(x - leftMargin, 0, WIDTH) &&
-                between(y - topMargin, 0, HEIGHT);
+        return between(x - leftMargin, 0, width) &&
+                between(y - topMargin, 0, height);
     }
 
     public double getVal() {

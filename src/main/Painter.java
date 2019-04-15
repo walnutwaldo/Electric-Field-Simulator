@@ -158,8 +158,8 @@ public class Painter extends JPanel {
                 return (int) Math.signum(o2.getDisTo(Camera.getPos()) - o1.getDisTo(Camera.getPos()));
             }
         });
-        addGrid(pq);
-        addBox(pq);
+        if (UIManager.gridCheckbox.isChecked()) addGrid(pq);
+        if (UIManager.boxCheckbox.isChecked()) addBox(pq);
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {

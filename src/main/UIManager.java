@@ -1,6 +1,7 @@
 package main;
 
 import UI.*;
+import UI.Checkbox;
 import objects.MovingCharge;
 
 import java.awt.*;
@@ -12,10 +13,6 @@ public class UIManager {
     private static final Font H1 = new Font("Havana", Font.BOLD, 15);
     private static final Font H2 = new Font("Havana", Font.PLAIN, 12);
     private static final Font INFO_FONT = new Font("Courier New", Font.PLAIN, 12);
-
-    private static List<UIComponent> editUI;
-    private static List<UIComponent> infoUI;
-    private static List<UIComponent> settingsUI;
 
     public static Header uiHeader;
     public static Header displayHeader;
@@ -36,6 +33,9 @@ public class UIManager {
     public static Slider movingChargeSlider;
     public static Slider speedSlider;
     public static Slider gridSizeSlider;
+
+    public static Checkbox gridCheckbox;
+    public static Checkbox boxCheckbox;
 
     private static void generateHeaders() {
         uiHeader = new Header("User Interface", H1, Color.WHITE, Header.CENTER);
@@ -61,12 +61,19 @@ public class UIManager {
         gridSizeSlider = new Slider(SimulationManager.MIN_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR);
     }
 
+    private static void generateCheckboxes() {
+        gridCheckbox = new Checkbox("Grid", H2, true);
+        boxCheckbox = new Checkbox("Box", H2, true);
+    }
+
     private static void generateComponents() {
         generateHeaders();
         generateSliders();
+        generateCheckboxes();
     }
 
-    private static void orderComponents() {
+    private static List<UIComponent> createSettingsUI() {
+        List<UIComponent> settingsUI = new ArrayList<UIComponent>();
         settingsUI.add(uiHeader);
         settingsUI.add(xSensitivityHeader);
         settingsUI.add(xSensitivitySlider);
@@ -80,15 +87,23 @@ public class UIManager {
         settingsUI.add(brightnessSlider);
         settingsUI.add(gridSizeHeader);
         settingsUI.add(gridSizeSlider);
+        settingsUI.add(gridCheckbox);
+        settingsUI.add(boxCheckbox);
 
         settingsUI.add(simulationHeader);
         settingsUI.add(movingChargeHeader);
         settingsUI.add(movingChargeSlider);
         settingsUI.add(speedHeader);
         settingsUI.add(speedSlider);
+        return settingsUI;
     }
 
-    private static void addInfo() {
+    private static List<UIComponent> createEditUI() {
+        return new ArrayList<UIComponent>();
+    }
+
+    private static List<UIComponent> createInfoUI() {
+        List<UIComponent> infoUI = new ArrayList<UIComponent>();
         infoUI.add(new Header("Made by Walden Yan", INFO_FONT, Color.WHITE));
         infoUI.add(new Header("Avon High School, CT", INFO_FONT, Color.WHITE));
         infoUI.add(new Header("AP Computer Science Principles", INFO_FONT, Color.WHITE));
@@ -97,21 +112,17 @@ public class UIManager {
         infoUI.add(h);
         infoUI.add(new Header("", INFO_FONT, Color.WHITE));
         infoUI.add(new Header("Language: Java", INFO_FONT, Color.WHITE));
+        return infoUI;
     }
 
     public static void init() {
-        editUI = new ArrayList<UIComponent>();
-        settingsUI = new ArrayList<UIComponent>();
-        infoUI = new ArrayList<UIComponent>();
         generateComponents();
-        orderComponents();
-        addInfo();
     }
 
     public static List<UIComponent> getUIComponents() {
-        if (SideBar.currentOption == SideBar.SETTINGS) return settingsUI;
-        else if (SideBar.currentOption == SideBar.EDIT) return editUI;
-        else if (SideBar.currentOption == SideBar.INFO) return infoUI;
+        if (SideBar.currentOption == SideBar.SETTINGS) return createSettingsUI();
+        else if (SideBar.currentOption == SideBar.EDIT) return createEditUI();
+        else if (SideBar.currentOption == SideBar.INFO) return createInfoUI();
         return new ArrayList<UIComponent>();
     }
 }

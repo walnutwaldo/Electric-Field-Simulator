@@ -23,26 +23,29 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public boolean downSimulation;
     public boolean downTab;
     public boolean downSlider;
+    public boolean downCheckbox;
     public boolean downOption;
 
     public boolean onSimulation;
     public boolean onTab;
     public boolean onSlider;
+    public boolean onCheckbox;
     public boolean onOption;
 
     public int currOption;
     public Slider currentSlider;
+    public Checkbox currentCheckbox;
 
     private double clamp(double a, double b, double c) {
         return Math.max(b, Math.min(a, c));
     }
 
     private boolean down() {
-        return downOption || downTab || downSimulation || downSlider;
+        return downOption || downTab || downSimulation || downSlider || downCheckbox;
     }
 
     private void updateTab(MouseEvent e) {
-        if (down()) {
+        if (downSimulation) {
             SideBar.hideTab();
             return;
         }
@@ -67,6 +70,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             onSimulation = newX < screenWidth && !onTab;
         onOption = false;
         onSlider = false;
+        onCheckbox = false;
         if (newX >= screenWidth && newY <= SideBar.OPTIONS_HEIGHT) {
             int newOption = (newX - screenWidth) / SideBar.OPTIONS_HEIGHT;
             if (!down()) currOption = newOption;
@@ -82,10 +86,15 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
                     if (uic == currentSlider && (!down() || downSlider)) onSlider = true;
                     break;
                 }
+                if (uic instanceof Checkbox && ((Checkbox) uic).onBox(xPos, yPos)) {
+                    if (!down()) currentCheckbox = (Checkbox) uic;
+                    if (uic == currentCheckbox && (!down() || downCheckbox)) onCheckbox = true;
+                    break;
+                }
                 yPos -= uic.topMargin + uic.height;
             }
         }
-        if (onTab || onSlider || onOption) {
+        if (onTab || onSlider || onOption || onCheckbox) {
             WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         } else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
@@ -133,6 +142,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         int screenWidth = WindowManager.painter.getWidth();
         downOption = onOption;
         downSlider = onSlider;
+        downCheckbox = onCheckbox;
         downTab = onTab;
         downSimulation = onSimulation;
         if (downSlider)
@@ -155,6 +165,10 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             if (onTab) SideBar.toggle();
             downTab = false;
             onTab = false;
+        }
+        if (downCheckbox) {
+            if (onCheckbox) currentCheckbox.toggle();
+            downCheckbox = false;
         }
         updateOns(e);
         updateTab(e);

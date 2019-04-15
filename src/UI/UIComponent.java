@@ -4,12 +4,13 @@ import java.awt.*;
 
 public abstract class UIComponent {
 
-    public int topMargin, leftMargin, width, height;
+    public static final int TOP_MARGIN = 10;
+    public static final int LEFT_MARGIN = 10;
+    public static final int WIDTH = SideBar.MAX_WIDTH - 20;
 
-    public UIComponent(int _topMargin, int _leftMargin, int _width, int _height) {
-        topMargin = _topMargin;
-        leftMargin = _leftMargin;
-        width = _width;
+    public int topMargin = TOP_MARGIN, leftMargin = LEFT_MARGIN, width = WIDTH, height;
+
+    public UIComponent(int _height) {
         height = _height;
     }
 
