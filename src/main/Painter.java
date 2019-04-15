@@ -29,7 +29,7 @@ public class Painter extends JPanel {
 
     private static final double GRID_STEP = 5;
 
-    private double maxDim;
+    public double maxDim;
 
     public Graphics2D g;
 
@@ -164,10 +164,13 @@ public class Painter extends JPanel {
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {
             Object o = pq.poll();
-            if (o instanceof FixedPointCharge)
-                Sphere.draw(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS);
+            if (o instanceof FixedPointCharge) {
+                Sphere.fill(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS, Color.WHITE);
+                if (WindowManager.mouseUI.currCharge == o)
+                    Sphere.draw(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS, Color.RED);
+            }
             if (o instanceof MovingCharge)
-                Sphere.draw(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS);
+                Sphere.fill(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS, Color.WHITE);
             if (o instanceof LineSeg)
                 Line3D.draw(g, (LineSeg) o);
         }

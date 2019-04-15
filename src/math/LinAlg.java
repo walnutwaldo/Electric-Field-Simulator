@@ -29,6 +29,10 @@ public class LinAlg {
         return res;
     }
 
+    public static double getDis(Matrix p, Line l) {
+        return crossProduct(Matrix.subtract(p, l.pnt), Matrix.normalize(l.step)).length();
+    }
+
     public static double getDis(Matrix p, LineSeg l) {
         if (dotProduct(Matrix.subtract(p, l.pnt1), Matrix.subtract(l.pnt2, l.pnt1)) < 0)
             return Math.sqrt(squareDis(l.pnt1, p));

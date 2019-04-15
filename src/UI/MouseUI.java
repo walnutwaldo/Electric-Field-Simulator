@@ -3,6 +3,7 @@ package UI;
 import main.UIManager;
 import main.WindowManager;
 import objects.Camera;
+import objects.FixedPointCharge;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -35,6 +36,8 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public int currOption;
     public Slider currentSlider;
     public Checkbox currentCheckbox;
+
+    public FixedPointCharge currCharge;
 
     private double clamp(double a, double b, double c) {
         return Math.max(b, Math.min(a, c));
@@ -126,6 +129,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         }
         lastX = newX;
         lastY = newY;
+        currCharge = ChargeSelector.getFPC(e);
     }
 
     @Override
@@ -136,10 +140,13 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         updateTab(e);
         lastX = newX;
         lastY = newY;
+
+        currCharge = ChargeSelector.getFPC(e);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override

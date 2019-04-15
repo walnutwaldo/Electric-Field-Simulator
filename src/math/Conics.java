@@ -36,7 +36,7 @@ public class Conics {
         return new Matrix(new double[][]{{theta, a, b, h, k}});
     }
 
-    public static void drawEllipse(Graphics2D g, Matrix ellipse) {
+    public static void fillEllipse(Graphics2D g, Matrix ellipse) {
         if (!isEllipse(ellipse)) return;
         AffineTransform at = g.getTransform();
         Matrix ellipseData = getEllipseData(ellipse);
@@ -47,6 +47,20 @@ public class Conics {
         double k = ellipseData.get(0, 4);
         g.rotate(theta, 0, 0);
         g.fill(new Ellipse2D.Double(h - a, k - b, 2 * a, 2 * b));
+        g.setTransform(at);
+    }
+
+    public static void drawEllipse(Graphics2D g, Matrix ellipse) {
+        if (!isEllipse(ellipse)) return;
+        AffineTransform at = g.getTransform();
+        Matrix ellipseData = getEllipseData(ellipse);
+        double theta = ellipseData.get(0, 0);
+        double a = ellipseData.get(0, 1);
+        double b = ellipseData.get(0, 2);
+        double h = ellipseData.get(0, 3);
+        double k = ellipseData.get(0, 4);
+        g.rotate(theta, 0, 0);
+        g.draw(new Ellipse2D.Double(h - a, k - b, 2 * a, 2 * b));
         g.setTransform(at);
     }
 

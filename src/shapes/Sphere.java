@@ -19,14 +19,7 @@ public class Sphere {
         return (int) (255 * Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS)));
     }
 
-    public static void draw(Graphics2D g, Matrix pos, double r) {
-        int fade = getFade(pos);
-        pos = Matrix.mult(pos, Camera.getTransformationMatrix());
-        if (!Camera.visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
-            return;
-        int brightness = (int) Math.min(255, UIManager.brightnessSlider.getVal() / squareDis(pos, Camera.getTransformedPos()));
-        g.setColor(new Color(brightness, brightness, brightness, fade));
-
+    private static Matrix getEllipse(Matrix pos, double r) {
         Matrix p_prime = Matrix.subtract(pos, Camera.getTransformedPos());
         double d = p_prime.length();
         double r_prime = r * Math.sqrt(d * d + r * r) / d;
@@ -51,7 +44,24 @@ public class Sphere {
                 {a2 * a2 - a3 * a3, -a3 * a5, -a5 * a5, a2 * a7 - a3 * a8, -a5 * a8, -a7 * a7 + a8 * a8}
         });
         Matrix ellipse = solveLinSystem(linSystem);
-        Conics.drawEllipse(g, ellipse);
+        return ellipse;
+    }
+
+    public static void fill(Graphics2D g, Matrix pos, double r, Color c) {
+        int fade = getFade(pos);
+        pos = Matrix.mult(pos, Camera.getTransformationMatrix());
+        if (!Camera.visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
+            return;
+        double brightness = Math.min(1, (UIManager.brightnessSlider.getVal() / squareDis(pos, Camera.getTransformedPos())) / 256);
+        g.setColor(new Color((int) (brightness * c.getRed()), (int) (brightness * c.getGreen()), (int) (brightness * c.getBlue()), fade));
+
+        Conics.fillEllipse(g, getEllipse(pos, r));
+    }
+
+    public static void draw(Graphics2D g, Matrix pos, double r, Color c) {
+        pos = Matrix.mult(pos, Camera.getTransformationMatrix());
+        g.setColor(c);
+        Conics.drawEllipse(g, getEllipse(pos, r));
     }
 
 }
