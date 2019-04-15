@@ -48,8 +48,7 @@ public class Sphere {
     }
 
     public static void fill(Graphics2D g, Matrix pos, double r, Color c) {
-        int fade = getFade(pos);
-        pos = Matrix.mult(pos, Camera.getTransformationMatrix());
+        int fade = getFade(Matrix.mult(pos, Camera.getTransformationMatrix().inv()));
         if (!Camera.visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
             return;
         double brightness = Math.min(1, (UIManager.brightnessSlider.getVal() / squareDis(pos, Camera.getTransformedPos())) / 256);
@@ -59,7 +58,6 @@ public class Sphere {
     }
 
     public static void draw(Graphics2D g, Matrix pos, double r, Color c) {
-        pos = Matrix.mult(pos, Camera.getTransformationMatrix());
         g.setColor(c);
         Conics.drawEllipse(g, getEllipse(pos, r));
     }

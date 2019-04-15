@@ -35,18 +35,16 @@ public class Line3D {
         return new LineSeg(null, null);
     }
 
-    public static void draw(Graphics2D g, LineSeg ls) {
-        Matrix cameraMatrix = Camera.getTransformationMatrix();
-        Matrix p1 = Matrix.mult(ls.pnt1, cameraMatrix);
-        Matrix p2 = Matrix.mult(ls.pnt2, cameraMatrix);
-        LineSeg vis = getVisibleSeg(p1, p2);
+    public static void draw(Graphics2D g, LineSeg ls, Color c) {
+        Matrix midpnt = Matrix.scale(Matrix.add(ls.pnt1, ls.pnt2), 0.5);
+        double s = 256 * squareDis(midpnt, Camera.getTransformedPos());
+        double brightness = Math.min(1, UIManager.brightnessSlider.getVal() / s);
+        g.setColor(new Color((int) (brightness * c.getRed()), (int) (brightness * c.getGreen()), (int) (brightness * c.getBlue())));
 
-        int brightness = (int) Math.min(255, UIManager.brightnessSlider.getVal() / squareDis(Matrix.scale(Matrix.add(p1, p2), 0.5), Camera.getTransformedPos()));
-        g.setColor(new Color(brightness, brightness, brightness));
-
+        LineSeg vis = getVisibleSeg(ls.pnt1, ls.pnt2);
         if (vis.pnt1 == null) return;
-        p1 = Camera.getProjection(vis.pnt1);
-        p2 = Camera.getProjection(vis.pnt2);
+        Matrix p1 = Camera.getProjection(vis.pnt1);
+        Matrix p2 = Camera.getProjection(vis.pnt2);
         g.setStroke(new BasicStroke(LINE_THICKNESS));
         g.draw(new Line2D.Double(p1.get(0, 0), p1.get(0, 1), p2.get(0, 0), p2.get(0, 1)));
     }

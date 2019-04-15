@@ -99,6 +99,11 @@ public class LinAlg {
         public double getDisTo(Matrix m) {
             return Math.max(Matrix.subtract(m, pnt1).length(), Matrix.subtract(m, pnt2).length());
         }
+
+        public static LineSeg mult(LineSeg ls, Matrix m) {
+            return new LineSeg(Matrix.mult(ls.pnt1, m), Matrix.mult(ls.pnt2, m));
+        }
+
     }
 
     public static class Plane {

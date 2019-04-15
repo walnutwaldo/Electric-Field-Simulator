@@ -19,7 +19,6 @@ import java.util.PriorityQueue;
 import static math.LinAlg.LineSeg;
 import static math.LinAlg.getDis;
 
-
 public class Painter extends JPanel {
 
     public static final int MIN_BRIGHTNESS = 100000;
@@ -165,14 +164,14 @@ public class Painter extends JPanel {
         while (!pq.isEmpty()) {
             Object o = pq.poll();
             if (o instanceof FixedPointCharge) {
-                Sphere.fill(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS, Color.WHITE);
+                Sphere.fill(g, Matrix.mult(((FixedPointCharge) o).getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, Color.WHITE);
                 if (WindowManager.mouseUI.currCharge == o)
-                    Sphere.draw(g, ((FixedPointCharge) o).getPos(), FixedPointCharge.RADIUS, Color.RED);
+                    Sphere.draw(g, Matrix.mult(((FixedPointCharge) o).getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, Color.RED);
             }
             if (o instanceof MovingCharge)
-                Sphere.fill(g, ((MovingCharge) o).getPos(), MovingCharge.RADIUS, Color.WHITE);
+                Sphere.fill(g, Matrix.mult(((MovingCharge) o).getPos(), Camera.getTransformationMatrix()), MovingCharge.RADIUS, Color.WHITE);
             if (o instanceof LineSeg)
-                Line3D.draw(g, (LineSeg) o);
+                Line3D.draw(g, LineSeg.mult((LineSeg) o, Camera.getTransformationMatrix()), Color.WHITE);
         }
         g.setTransform(at);
     }

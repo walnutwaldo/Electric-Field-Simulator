@@ -129,4 +129,26 @@ public class Matrix {
         return res;
     }
 
+    public Matrix t() {
+        Matrix res = new Matrix(numCols(), numRows());
+        for (int i = 0; i < numRows(); i++)
+            for (int j = 0; j < numCols(); j++) res.set(j, i, get(i, j));
+        return res;
+    }
+
+    public Matrix inv() {
+        if (numCols() != 3 || numRows() != 3) throw new IllegalArgumentException("Matrix is not 3 by 3");
+        Matrix res = new Matrix(3, 3);
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++) {
+                double a1 = get((i + 1) % 3, (j + 1) % 3) * get((i + 2) % 3, (j + 2) % 3);
+                double a2 = get((i + 1) % 3, (j + 2) % 3) * get((i + 2) % 3, (j + 1) % 3);
+                res.set(i, j, a1 - a2);
+            }
+        double det = 0;
+        for (int i = 0; i < 3; i++) det += res.get(0, i) * get(0, i);
+        res = res.t();
+        res.multBy(1 / det);
+        return res;
+    }
 }
