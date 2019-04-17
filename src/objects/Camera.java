@@ -2,6 +2,8 @@ package objects;
 
 import math.Matrix;
 
+import java.awt.*;
+
 import static math.LinAlg.EPSILON;
 
 public class Camera implements Positionable {
@@ -57,6 +59,10 @@ public class Camera implements Positionable {
 
     public double getDisTo(Matrix m) {
         return Matrix.subtract(getPos(), m).length();
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
     }
 
     public static Matrix getTransformationMatrix() {

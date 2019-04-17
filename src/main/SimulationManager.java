@@ -1,12 +1,11 @@
 package main;
 
-import math.Matrix;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 
-import static math.LinAlg.*;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SimulationManager {
 
@@ -35,7 +34,8 @@ public class SimulationManager {
     }
 
     public static List<MovingCharge> getMovingCharges() {
-        while(lockedMovingCharges){}
+        while (lockedMovingCharges) {
+        }
         lockedMovingCharges = true;
         List<MovingCharge> ret = new ArrayList<MovingCharge>(movingCharges);
         lockedMovingCharges = false;
@@ -59,12 +59,17 @@ public class SimulationManager {
 
         Collections.shuffle(newList);
         List<MovingCharge> list2 = new ArrayList<MovingCharge>();
-        for(int i = 0; i < Math.min(newList.size(), UIManager.movingChargeSlider.getVal()); i++) list2.add(newList.get(i));
+        for (int i = 0; i < Math.min(newList.size(), UIManager.movingChargeSlider.getVal()); i++)
+            list2.add(newList.get(i));
 
-        while(lockedMovingCharges){}
+        while (lockedMovingCharges) {
+        }
         lockedMovingCharges = true;
         movingCharges = list2;
         lockedMovingCharges = false;
     }
 
+    public static void addCharge(FixedPointCharge fixedPointCharge) {
+        fixedCharges.add(fixedPointCharge);
+    }
 }

@@ -1,5 +1,6 @@
 package shapes;
 
+import editing.ChargeSelector;
 import main.UIManager;
 import math.Conics;
 import math.Matrix;
@@ -13,10 +14,11 @@ import static math.LinAlg.squareDis;
 
 public class Sphere {
 
-    private static int getFade(Matrix pos) {
+    private static double getFade(Matrix pos) {
+        if (ChargeSelector.editing) return 1;
         double minD = MovingCharge.FADE_DIS;
         for (int i = 0; i < 3; i++) minD = Math.min(minD, UIManager.gridSizeSlider.getVal() - Math.abs(pos.get(0, i)));
-        return (int) (255 * Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS)));
+        return Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS));
     }
 
     private static Matrix getEllipse(Matrix pos, double r) {
@@ -48,11 +50,11 @@ public class Sphere {
     }
 
     public static void fill(Graphics2D g, Matrix pos, double r, Color c) {
-        int fade = getFade(Matrix.mult(pos, Camera.getTransformationMatrix().inv()));
+        double fade = getFade(Matrix.mult(pos, Camera.getTransformationMatrix().inv()));
         if (!Camera.visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
             return;
         double brightness = Math.min(1, (UIManager.brightnessSlider.getVal() / squareDis(pos, Camera.getTransformedPos())) / 256);
-        g.setColor(new Color((int) (brightness * c.getRed()), (int) (brightness * c.getGreen()), (int) (brightness * c.getBlue()), fade));
+        g.setColor(new Color((int) (brightness * c.getRed()), (int) (brightness * c.getGreen()), (int) (brightness * c.getBlue()), (int) (fade * c.getAlpha())));
 
         Conics.fillEllipse(g, getEllipse(pos, r));
     }

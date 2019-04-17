@@ -162,16 +162,8 @@ public class Painter extends JPanel {
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {
-            Object o = pq.poll();
-            if (o instanceof FixedPointCharge) {
-                Sphere.fill(g, Matrix.mult(((FixedPointCharge) o).getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, Color.WHITE);
-                if (WindowManager.mouseUI.currCharge == o)
-                    Sphere.draw(g, Matrix.mult(((FixedPointCharge) o).getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, Color.RED);
-            }
-            if (o instanceof MovingCharge)
-                Sphere.fill(g, Matrix.mult(((MovingCharge) o).getPos(), Camera.getTransformationMatrix()), MovingCharge.RADIUS, Color.WHITE);
-            if (o instanceof LineSeg)
-                Line3D.draw(g, LineSeg.mult((LineSeg) o, Camera.getTransformationMatrix()), Color.WHITE);
+            Positionable o = pq.poll();
+            o.draw(g);
         }
         g.setTransform(at);
     }

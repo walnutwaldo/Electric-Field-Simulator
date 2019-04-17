@@ -1,7 +1,11 @@
 package main;
 
-import UI.*;
+import UI.Button;
 import UI.Checkbox;
+import UI.*;
+import editing.ChargeAdder;
+import editing.ChargeSelector;
+import objects.FixedPointCharge;
 import objects.MovingCharge;
 
 import java.awt.*;
@@ -35,6 +39,9 @@ public class UIManager {
 
     public static Checkbox gridCheckbox;
     public static Checkbox boxCheckbox;
+    public static Button editButton;
+    public static Button newChargeButton;
+    public static Slider chargeSlider;
     private static HorizontalLayout checkboxesLayout;
 
     private static void generateHeaders() {
@@ -58,20 +65,39 @@ public class UIManager {
         movingChargeSlider = new Slider(SimulationManager.MIN_MOVING_CHARGES, SimulationManager.MAX_MOVING_CHARGES, Slider.LOGARITHMIC);
         speedSlider = new Slider(MovingCharge.MIN_SPEED, MovingCharge.MAX_SPEED, Slider.LINEAR);
         gridSizeSlider = new Slider(SimulationManager.MIN_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR);
+        chargeSlider = new Slider(FixedPointCharge.MIN_CHARGE, FixedPointCharge.MAX_CHARGE, Slider.LINEAR, new Runnable() {
+            @Override
+            public void run() {
+                ChargeSelector.selectedCharge.setCharge(UIManager.chargeSlider.getVal());
+            }
+        });
     }
 
-    private static void generateCheckboxes() {
+    private static void generateButtons() {
         gridCheckbox = new Checkbox("Grid", H2, true);
         boxCheckbox = new Checkbox("Box", H2, true);
         checkboxesLayout = new HorizontalLayout();
         checkboxesLayout.add(gridCheckbox);
         checkboxesLayout.add(boxCheckbox);
+
+        editButton = new Button("EDIT", H2, new Runnable() {
+            @Override
+            public void run() {
+                ChargeSelector.toggle();
+            }
+        });
+        newChargeButton = new Button("ADD NEW CHARGE", H2, new Runnable() {
+            @Override
+            public void run() {
+                ChargeAdder.addNewCharge();
+            }
+        });
     }
 
     private static void generateComponents() {
         generateHeaders();
         generateSliders();
-        generateCheckboxes();
+        generateButtons();
     }
 
     private static List<UIComponent> createSettingsUI() {
@@ -100,7 +126,14 @@ public class UIManager {
     }
 
     private static List<UIComponent> createEditUI() {
-        return new ArrayList<UIComponent>();
+        List<UIComponent> editUI = new ArrayList<UIComponent>();
+        editUI.add(editButton);
+        if (ChargeSelector.editing) {
+            editUI.add(newChargeButton);
+            if (ChargeSelector.selectedCharge != null)
+                editUI.add(chargeSlider);
+        }
+        return editUI;
     }
 
     private static List<UIComponent> createInfoUI() {

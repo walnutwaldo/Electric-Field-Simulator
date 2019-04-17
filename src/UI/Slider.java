@@ -13,9 +13,11 @@ public class Slider extends UIComponent {
     public static final int SLIDER_WIDTH = 7;
     public static final int SLIDER_HEIGHT = 12;
 
-    public double sliderLoc;
+    private double sliderLoc;
     private double min, max;
     private int type;
+
+    private Runnable update;
 
     public Slider(double _min, double _max, int _type) {
         super(HEIGHT);
@@ -23,6 +25,15 @@ public class Slider extends UIComponent {
         min = _min;
         max = _max;
         type = _type;
+    }
+
+    public Slider(double _min, double _max, int _type, Runnable _update) {
+        super(HEIGHT);
+        sliderLoc = 0.5;
+        min = _min;
+        max = _max;
+        type = _type;
+        update = _update;
     }
 
     public void draw(Graphics2D g) {
@@ -56,5 +67,16 @@ public class Slider extends UIComponent {
         if (type == LINEAR) return min + (max - min) * sliderLoc;
         else if (type == LOGARITHMIC) return min * Math.pow((max / min), sliderLoc);
         else return -1;
+    }
+
+    public void setSlider(double s) {
+        sliderLoc = s;
+        if (update != null) update.run();
+    }
+
+    public void setVal(double v) {
+        if (type == LINEAR) sliderLoc = (v - min) / (max - min);
+        else sliderLoc = Math.log(v / min) / Math.log(max / min);
+        if (update != null) update.run();
     }
 }

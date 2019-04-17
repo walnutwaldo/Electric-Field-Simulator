@@ -1,14 +1,18 @@
 package objects;
 
+import editing.ChargeSelector;
 import main.SimulationManager;
 import main.UIManager;
 import math.Matrix;
+import shapes.Sphere;
 
-import java.util.List;
+import java.awt.*;
 
 import static math.LinAlg.*;
 
 public class MovingCharge implements Positionable {
+
+    private static final double SLOW_FACTOR = 0.1;
 
     public static final double FADE_DIS = 1;
     public static final double RADIUS = 0.1;
@@ -23,7 +27,7 @@ public class MovingCharge implements Positionable {
 
     private long lastT;
 
-    public MovingCharge(MovingCharge mc){
+    public MovingCharge(MovingCharge mc) {
         pos = new Matrix(mc.pos);
         velocity = new Matrix(mc.velocity);
         lastT = mc.lastT;
@@ -52,33 +56,44 @@ public class MovingCharge implements Positionable {
         long currT = System.currentTimeMillis();
         double dt = (double) (currT - lastT) / 1000;
         lastT = currT;
-
         velocity = new Matrix(new double[][]{{0, 0, 0}});
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) {
             Matrix a = Matrix.scale(Matrix.normalize(Matrix.subtract(pos, fpc.getPos())),
                     fpc.getCharge() / squareDis(pos, fpc.getPos()));
             velocity = Matrix.add(velocity, a);
         }
-        Matrix newPos = Matrix.add(pos, Matrix.scale(velocity, UIManager.speedSlider.getVal() * dt));
+        Matrix newPos = Matrix.add(pos, Matrix.scale(velocity, getSpeed() * dt));
 
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges())
             if (getDis(fpc.getPos(), new LineSeg(pos, newPos)) < MIN_DIS)
                 finished = true;
-        for(int dim = 0; dim < 3; dim++) if(Math.abs(newPos.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
+        for (int dim = 0; dim < 3; dim++)
+            if (Math.abs(newPos.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
         pos = newPos;
+    }
+
+    private double getSpeed() {
+        if (ChargeSelector.editing) return UIManager.speedSlider.getVal() * SLOW_FACTOR;
+        return UIManager.speedSlider.getVal();
     }
 
     public Matrix getPos() {
         double dt = (double) (System.currentTimeMillis() - lastT) / 1000;
-        Matrix newP = Matrix.add(pos, Matrix.scale(velocity, UIManager.speedSlider.getVal() * dt));
+        Matrix newP = Matrix.add(pos, Matrix.scale(velocity, getSpeed() * dt));
 
-        for(int dim = 0; dim < 3; dim++) if(Math.abs(newP.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
-        if(finished) return pos;
+        for (int dim = 0; dim < 3; dim++)
+            if (Math.abs(newP.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;
+        if (finished) return pos;
         return newP;
     }
 
     public double getDisTo(Matrix m) {
         return Matrix.subtract(m, pos).length() - MovingCharge.RADIUS;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        Sphere.fill(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), MovingCharge.RADIUS, Color.WHITE);
     }
 
     public boolean isFinished() {

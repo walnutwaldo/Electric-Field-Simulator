@@ -1,9 +1,9 @@
 package UI;
 
+import editing.ChargeSelector;
 import main.UIManager;
 import main.WindowManager;
 import objects.Camera;
-import objects.FixedPointCharge;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -24,27 +24,25 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
     public boolean downSimulation;
     public boolean downTab;
     public boolean downSlider;
-    public boolean downCheckbox;
+    public boolean downButton;
     public boolean downOption;
 
     public boolean onSimulation;
     public boolean onTab;
     public boolean onSlider;
-    public boolean onCheckbox;
+    public boolean onButton;
     public boolean onOption;
 
     public int currOption;
     public Slider currentSlider;
-    public Checkbox currentCheckbox;
-
-    public FixedPointCharge currCharge;
+    public Button currentButton;
 
     private double clamp(double a, double b, double c) {
         return Math.max(b, Math.min(a, c));
     }
 
     private boolean down() {
-        return downOption || downTab || downSimulation || downSlider || downCheckbox;
+        return downOption || downTab || downSimulation || downSlider || downButton;
     }
 
     private void updateTab(MouseEvent e) {
@@ -67,9 +65,9 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             if (!down()) currentSlider = (Slider) uic;
             if (uic == currentSlider && (!down() || downSlider)) onSlider = true;
         }
-        if (uic instanceof Checkbox && ((Checkbox) uic).onBox(xPos, yPos)) {
-            if (!down()) currentCheckbox = (Checkbox) uic;
-            if (uic == currentCheckbox && (!down() || downCheckbox)) onCheckbox = true;
+        if (uic instanceof Button && ((Button) uic).isOn(xPos, yPos)) {
+            if (!down()) currentButton = (Button) uic;
+            if (uic == currentButton && (!down() || downButton)) onButton = true;
         }
         if (uic instanceof HorizontalLayout) for (UIComponent uic2 : ((HorizontalLayout) uic).getComponents()) {
             processUIC(uic2, xPos, yPos);
@@ -88,7 +86,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             onSimulation = newX < screenWidth && !onTab;
         onOption = false;
         onSlider = false;
-        onCheckbox = false;
+        onButton = false;
         if (newX >= screenWidth && newY <= SideBar.OPTIONS_HEIGHT) {
             int newOption = (newX - screenWidth) / SideBar.OPTIONS_HEIGHT;
             if (!down()) currOption = newOption;
@@ -103,22 +101,25 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
                 yPos -= uic.topMargin + uic.height;
             }
         }
-        if (onTab || onSlider || onOption || onCheckbox) {
+        if (onTab || onSlider || onOption || onButton || ChargeSelector.on) {
             WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         } else WindowManager.painter.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        ChargeSelector.moveUpdate(e);
+        if (ChargeSelector.down) return;
         int newX = e.getX();
         int newY = e.getY();
         int screenWidth = WindowManager.painter.getWidth();
         updateOns(e);
         updateTab(e);
-        if (downSlider)
-            currentSlider.sliderLoc =
+        if (downSlider) {
+            currentSlider.setSlider(
                     clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
-                            0, 1);
+                            0, 1));
+        }
         if (downSimulation) {
             int dx = newX - lastX;
             int dy = newY - lastY;
@@ -129,19 +130,17 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         }
         lastX = newX;
         lastY = newY;
-        currCharge = ChargeSelector.getFPC(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        ChargeSelector.moveUpdate(e);
         int newX = e.getX();
         int newY = e.getY();
         updateOns(e);
         updateTab(e);
         lastX = newX;
         lastY = newY;
-
-        currCharge = ChargeSelector.getFPC(e);
     }
 
     @Override
@@ -155,13 +154,14 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         int screenWidth = WindowManager.painter.getWidth();
         downOption = onOption;
         downSlider = onSlider;
-        downCheckbox = onCheckbox;
+        downButton = onButton;
         downTab = onTab;
         downSimulation = onSimulation;
         if (downSlider)
-            currentSlider.sliderLoc =
+            currentSlider.setSlider(
                     clamp((double) (e.getX() - screenWidth - currentSlider.LEFT_MARGIN) / currentSlider.WIDTH,
-                            0, 1);
+                            0, 1));
+        ChargeSelector.pressUpdate(e);
     }
 
     @Override
@@ -179,12 +179,13 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
             downTab = false;
             onTab = false;
         }
-        if (downCheckbox) {
-            if (onCheckbox) currentCheckbox.toggle();
-            downCheckbox = false;
+        if (downButton) {
+            if (onButton) currentButton.press();
+            downButton = false;
         }
         updateOns(e);
         updateTab(e);
+        ChargeSelector.releaseUpdate(e);
     }
 
     @Override

@@ -1,6 +1,10 @@
 package math;
 
+import objects.Camera;
 import objects.Positionable;
+import shapes.Line3D;
+
+import java.awt.*;
 
 public class LinAlg {
 
@@ -98,6 +102,11 @@ public class LinAlg {
 
         public double getDisTo(Matrix m) {
             return Math.max(Matrix.subtract(m, pnt1).length(), Matrix.subtract(m, pnt2).length());
+        }
+
+        @Override
+        public void draw(Graphics2D g) {
+            Line3D.draw(g, LineSeg.mult(this, Camera.getTransformationMatrix()), Color.WHITE);
         }
 
         public static LineSeg mult(LineSeg ls, Matrix m) {
