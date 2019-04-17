@@ -69,7 +69,11 @@ public class SimulationManager {
         lockedMovingCharges = false;
     }
 
-    public static void addCharge(FixedPointCharge fixedPointCharge) {
-        fixedCharges.add(fixedPointCharge);
+    public static void addCharge(FixedPointCharge c) {
+        fixedCharges.add(c);
+    }
+
+    public static void remove(FixedPointCharge c) {
+        fixedCharges.remove(c);
     }
 }

@@ -14,10 +14,11 @@ import static math.LinAlg.squareDis;
 
 public class Sphere {
 
-    private static double getFade(Matrix pos) {
+    private static double getFade(Matrix pos, double rad) {
         if (ChargeSelector.editing) return 1;
         double minD = MovingCharge.FADE_DIS;
-        for (int i = 0; i < 3; i++) minD = Math.min(minD, UIManager.gridSizeSlider.getVal() - Math.abs(pos.get(0, i)));
+        for (int i = 0; i < 3; i++)
+            minD = Math.min(minD, UIManager.gridSizeSlider.getVal() + rad - Math.abs(pos.get(0, i)));
         return Math.max(0, Math.min(1, minD / MovingCharge.FADE_DIS));
     }
 
@@ -50,7 +51,7 @@ public class Sphere {
     }
 
     public static void fill(Graphics2D g, Matrix pos, double r, Color c) {
-        double fade = getFade(Matrix.mult(pos, Camera.getTransformationMatrix().inv()));
+        double fade = getFade(Matrix.mult(pos, Camera.getTransformationMatrix().inv()), r);
         if (!Camera.visible(Matrix.add(pos, new Matrix(new double[][]{{0, r / Math.sin(Camera.FOV / 2), 0}}))))
             return;
         double brightness = Math.min(1, (UIManager.brightnessSlider.getVal() / squareDis(pos, Camera.getTransformedPos())) / 256);

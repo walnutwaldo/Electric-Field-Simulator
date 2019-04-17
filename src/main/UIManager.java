@@ -28,6 +28,10 @@ public class UIManager {
     public static Header ySensitivityHeader;
     public static Header movingChargeHeader;
     public static Header speedHeader;
+    public static Header chargeHeader;
+    public static Header xPosHeader;
+    public static Header yPosHeader;
+    public static Header zPosHeader;
 
     public static Slider brightnessSlider;
     public static Slider mouseWheelSensitivitySlider;
@@ -36,13 +40,19 @@ public class UIManager {
     public static Slider movingChargeSlider;
     public static Slider speedSlider;
     public static Slider gridSizeSlider;
+    public static Slider chargeSlider;
+    public static Slider xPosSlider;
+    public static Slider yPosSlider;
+    public static Slider zPosSlider;
 
     public static Checkbox gridCheckbox;
     public static Checkbox boxCheckbox;
     public static Button editButton;
     public static Button newChargeButton;
-    public static Slider chargeSlider;
+    public static Button deleteChargeButton;
     private static HorizontalLayout checkboxesLayout;
+
+    private static List<UIComponent> settingsUI;
 
     private static void generateHeaders() {
         uiHeader = new Header("User Interface", H1, Color.WHITE, Header.CENTER);
@@ -55,6 +65,11 @@ public class UIManager {
         ySensitivityHeader = new Header("Y Sensitivity", H2, Color.WHITE);
         movingChargeHeader = new Header("Number of Moving Charges", H2, Color.WHITE);
         speedHeader = new Header("Speed", H2, Color.WHITE);
+
+        chargeHeader = new Header("Charge: ", H2, Color.WHITE);
+        xPosHeader = new Header("X: ", H2, Color.WHITE);
+        yPosHeader = new Header("Y: ", H2, Color.WHITE);
+        zPosHeader = new Header("Z: ", H2, Color.WHITE);
     }
 
     private static void generateSliders() {
@@ -69,6 +84,28 @@ public class UIManager {
             @Override
             public void run() {
                 ChargeSelector.selectedCharge.setCharge(UIManager.chargeSlider.getVal());
+                UIManager.chargeHeader.text = "Charge: " + Double.toString(Math.round(ChargeSelector.selectedCharge.getCharge() * 10) / 10.0);
+            }
+        });
+        xPosSlider = new Slider(-SimulationManager.MAX_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR, new Runnable() {
+            @Override
+            public void run() {
+                ChargeSelector.selectedCharge.setX(UIManager.xPosSlider.getVal());
+                UIManager.xPosHeader.text = "X: " + Double.toString(Math.round(ChargeSelector.selectedCharge.getX() * 10) / 10.0);
+            }
+        });
+        yPosSlider = new Slider(-SimulationManager.MAX_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR, new Runnable() {
+            @Override
+            public void run() {
+                ChargeSelector.selectedCharge.setY(UIManager.yPosSlider.getVal());
+                UIManager.yPosHeader.text = "Y: " + Double.toString(Math.round(ChargeSelector.selectedCharge.getY() * 10) / 10.0);
+            }
+        });
+        zPosSlider = new Slider(-SimulationManager.MAX_GRID_SIZE, SimulationManager.MAX_GRID_SIZE, Slider.LINEAR, new Runnable() {
+            @Override
+            public void run() {
+                ChargeSelector.selectedCharge.setZ(UIManager.zPosSlider.getVal());
+                UIManager.zPosHeader.text = "Z: " + Double.toString(Math.round(ChargeSelector.selectedCharge.getZ() * 10) / 10.0);
             }
         });
     }
@@ -92,6 +129,13 @@ public class UIManager {
                 ChargeAdder.addNewCharge();
             }
         });
+        deleteChargeButton = new Button("DELETE", H2, new Runnable() {
+            @Override
+            public void run() {
+                SimulationManager.remove(ChargeSelector.selectedCharge);
+                ChargeSelector.selectedCharge = null;
+            }
+        });
     }
 
     private static void generateComponents() {
@@ -101,27 +145,28 @@ public class UIManager {
     }
 
     private static List<UIComponent> createSettingsUI() {
-        List<UIComponent> settingsUI = new ArrayList<UIComponent>(20);
-        settingsUI.add(uiHeader);
-        settingsUI.add(xSensitivityHeader);
-        settingsUI.add(xSensitivitySlider);
-        settingsUI.add(ySensitivityHeader);
-        settingsUI.add(ySensitivitySlider);
-        settingsUI.add(mouseWheelSensitivityHeader);
-        settingsUI.add(mouseWheelSensitivitySlider);
+        if (settingsUI == null) {
+            settingsUI = new ArrayList<UIComponent>(20);
+            settingsUI.add(uiHeader);
+            settingsUI.add(xSensitivityHeader);
+            settingsUI.add(xSensitivitySlider);
+            settingsUI.add(ySensitivityHeader);
+            settingsUI.add(ySensitivitySlider);
+            settingsUI.add(mouseWheelSensitivityHeader);
+            settingsUI.add(mouseWheelSensitivitySlider);
 
-        settingsUI.add(displayHeader);
-        settingsUI.add(brightnessHeader);
-        settingsUI.add(brightnessSlider);
-        settingsUI.add(checkboxesLayout);
-        if (gridCheckbox.isChecked() || boxCheckbox.isChecked())
+            settingsUI.add(displayHeader);
+            settingsUI.add(brightnessHeader);
+            settingsUI.add(brightnessSlider);
+            settingsUI.add(checkboxesLayout);
             settingsUI.add(gridSizeSlider);
 
-        settingsUI.add(simulationHeader);
-        settingsUI.add(movingChargeHeader);
-        settingsUI.add(movingChargeSlider);
-        settingsUI.add(speedHeader);
-        settingsUI.add(speedSlider);
+            settingsUI.add(simulationHeader);
+            settingsUI.add(movingChargeHeader);
+            settingsUI.add(movingChargeSlider);
+            settingsUI.add(speedHeader);
+            settingsUI.add(speedSlider);
+        }
         return settingsUI;
     }
 
@@ -130,8 +175,17 @@ public class UIManager {
         editUI.add(editButton);
         if (ChargeSelector.editing) {
             editUI.add(newChargeButton);
-            if (ChargeSelector.selectedCharge != null)
+            if (ChargeSelector.selectedCharge != null) {
+                editUI.add(chargeHeader);
                 editUI.add(chargeSlider);
+                editUI.add(xPosHeader);
+                editUI.add(xPosSlider);
+                editUI.add(yPosHeader);
+                editUI.add(yPosSlider);
+                editUI.add(zPosHeader);
+                editUI.add(zPosSlider);
+                editUI.add(deleteChargeButton);
+            }
         }
         return editUI;
     }

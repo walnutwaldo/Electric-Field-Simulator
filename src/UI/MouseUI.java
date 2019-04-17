@@ -41,7 +41,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
         return Math.max(b, Math.min(a, c));
     }
 
-    private boolean down() {
+    public boolean down() {
         return downOption || downTab || downSimulation || downSlider || downButton;
     }
 
@@ -145,7 +145,7 @@ public class MouseUI implements MouseMotionListener, MouseListener, MouseWheelLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        ChargeSelector.clickUpdate(e);
     }
 
     @Override

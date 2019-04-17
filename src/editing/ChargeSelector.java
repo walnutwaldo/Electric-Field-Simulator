@@ -30,11 +30,15 @@ public class ChargeSelector {
     public static FixedPointCharge getFPC(MouseEvent e) {
         if (!editing) return null;
         LinAlg.Line l = getRay(e);
+        FixedPointCharge curr = null;
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) {
             Matrix pos = Matrix.mult(fpc.getPos(), Camera.getTransformationMatrix());
-            if (LinAlg.getDis(pos, l) < FixedPointCharge.RADIUS) return fpc;
+            if (LinAlg.getDis(pos, l) < FixedPointCharge.RADIUS) {
+                if (curr == null || LinAlg.getDis(fpc.getPos(), Camera.getPos()) < LinAlg.getDis(curr.getPos(), Camera.getPos()))
+                    curr = fpc;
+            }
         }
-        return null;
+        return curr;
     }
 
     public static void updateCharge(MouseEvent e) {
@@ -55,6 +59,14 @@ public class ChargeSelector {
         if (on) down = true;
     }
 
+    public static void selectCharge(FixedPointCharge newCharge) {
+        selectedCharge = newCharge;
+        UIManager.chargeSlider.setVal(newCharge.getCharge());
+        UIManager.xPosSlider.setVal(newCharge.getX());
+        UIManager.yPosSlider.setVal(newCharge.getY());
+        UIManager.zPosSlider.setVal(newCharge.getZ());
+    }
+
     public static void releaseUpdate(MouseEvent e) {
         updateCharge(e);
         if (down) {
@@ -62,11 +74,15 @@ public class ChargeSelector {
             if (getFPC(e) == currCharge) {
                 if (selectedCharge == currCharge) selectedCharge = null;
                 else {
-                    selectedCharge = currCharge;
-                    UIManager.chargeSlider.setVal(currCharge.getCharge());
+                    selectCharge(currCharge);
                 }
             }
         }
+    }
+
+    public static void clickUpdate(MouseEvent e) {
+        updateCharge(e);
+        if (e.getX() < WindowManager.painter.getWidth()) selectedCharge = currCharge;
     }
 
     public static void toggle() {

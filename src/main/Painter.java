@@ -2,6 +2,7 @@ package main;
 
 import UI.SideBar;
 import UI.UIComponent;
+import editing.ChargeSelector;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
@@ -168,6 +169,12 @@ public class Painter extends JPanel {
         g.setTransform(at);
     }
 
+    private void drawEditUI() {
+        g.setFont(new Font("Havana", Font.BOLD, 20));
+        g.setColor(Color.RED);
+        g.drawString("EDIT MODE", 10, 30);
+    }
+
     private void init(Graphics _g) {
         maxDim = Math.max(getWidth(), getHeight());
         g = (Graphics2D) _g;
@@ -178,6 +185,7 @@ public class Painter extends JPanel {
         init(_g);
         drawSimulation();
         drawSideBar();
+        if(ChargeSelector.editing) drawEditUI();
     }
 
 }

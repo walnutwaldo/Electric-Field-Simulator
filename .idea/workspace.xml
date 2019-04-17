@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72ae2d66-fa99-4151-9611-48f07b4bc5e9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/MouseUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/MouseUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editing/ChargeAdder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/editing/ChargeAdder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editing/ChargeSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/editing/ChargeSelector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/Painter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Painter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/LinAlg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/LinAlg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shapes/Line3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shapes/Line3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/SimulationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/SimulationManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects/FixedPointCharge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects/FixedPointCharge.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shapes/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shapes/Sphere.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,27 +27,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/MouseUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="111" column="44" lean-forward="true" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
+            <state relative-caret-position="309">
+              <caret line="163" column="38" lean-forward="true" selection-start-line="163" selection-start-column="38" selection-end-line="163" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#6718#6719#0" expanded="true" />
-                <element signature="e#6746#6747#0" expanded="true" />
-                <element signature="e#6805#6806#0" expanded="true" />
-                <element signature="e#6838#6839#0" expanded="true" />
+                <element signature="e#5678#5679#0" expanded="true" />
+                <element signature="e#5723#5724#0" expanded="true" />
+                <element signature="method#mouseWheelMoved#0;class#MouseUI#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/UI/ChargeSelector.java">
+        <entry file="file://$PROJECT_DIR$/src/editing/ChargeAdder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -52,12 +55,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/shapes/Line3D.java">
+        <entry file="file://$PROJECT_DIR$/src/editing/ChargeSelector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+            <state relative-caret-position="637">
+              <caret line="58" column="28" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="714">
+              <caret line="71" column="23" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2528#2529#0" expanded="true" />
+                <element signature="e#2563#2564#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="173" column="64" selection-start-line="173" selection-start-column="64" selection-end-line="173" selection-end-column="64" />
+              <folding>
+                <element signature="class#3264:3371" />
+                <element signature="e#5748#5749#0" expanded="true" />
+                <element signature="e#5803#5804#0" expanded="true" />
+                <element signature="e#5945#5946#0" expanded="true" />
+                <element signature="e#6003#6004#0" expanded="true" />
+                <element signature="method#generateComponents#0;class#UIManager#0" />
+                <element signature="method#createInfoUI#0;class#UIManager#0" />
+                <element signature="e#4467#4480#0" expanded="true" />
+                <element signature="e#8913#8914#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,24 +103,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="173" column="103" selection-start-line="173" selection-start-column="103" selection-end-line="173" selection-end-column="103" />
+            <state relative-caret-position="187">
+              <caret line="174" column="38" lean-forward="true" selection-start-line="174" selection-start-column="38" selection-end-line="174" selection-end-column="38" />
               <folding>
                 <element signature="method#addLineSeg#0;class#Painter#0" />
-                <element signature="e#1149#1485#1" />
-                <element signature="e#1237#1322#1" />
-                <element signature="e#1328#1475#1" />
                 <element signature="method#addGrid#0;class#Painter#0" />
-                <element signature="e#1713#1942#1" />
                 <element signature="method#addBox#0;class#Painter#0" />
-                <element signature="e#2717#3098#1" />
                 <element signature="method#drawTab#0;class#Painter#0" />
-                <element signature="e#3579#3730#1" />
                 <element signature="method#drawOptionsBar#0;class#Painter#0" />
-                <element signature="method#drawSideBar#0;class#Painter#0" />
-                <element signature="e#5492#5635#1" />
                 <element signature="method#init#0;class#Painter#0" />
-                <element signature="method#paintComponent#0;class#Painter#0" />
               </folding>
             </state>
           </provider>
@@ -92,8 +120,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/shapes/Sphere.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="53" column="79" selection-start-line="53" selection-start-column="79" selection-end-line="53" selection-end-column="79" />
+            <state relative-caret-position="289">
+              <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -101,32 +129,18 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/math/Matrix.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/objects/FixedPointCharge.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2329">
-              <caret line="147" column="23" selection-start-line="147" selection-start-column="23" selection-end-line="147" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="520">
-              <caret line="53" column="40" lean-forward="true" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+            <state relative-caret-position="214">
+              <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1186#1187#0" expanded="true" />
+                <element signature="e#1215#1216#0" expanded="true" />
+                <element signature="e#1127#1128#0" expanded="true" />
+                <element signature="e#1163#1164#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/math/LinAlg.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="103" column="80" selection-start-line="103" selection-start-column="80" selection-end-line="103" selection-end-column="80" />
             </state>
           </provider>
         </entry>
@@ -155,6 +169,9 @@
       <find>Camera.FOV</find>
       <find>FACTOR</find>
       <find>n</find>
+      <find>Check</find>
+      <find>checkbo</find>
+      <find>speedSlider</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -177,17 +194,13 @@
         <option value="$PROJECT_DIR$/src/MovingCharge.java" />
         <option value="$PROJECT_DIR$/src/FixedPointCharge.java" />
         <option value="$PROJECT_DIR$/src/WindowManager.java" />
-        <option value="$PROJECT_DIR$/src/objects/FixedPointCharge.java" />
         <option value="$PROJECT_DIR$/src/SimulationManager.java" />
         <option value="$PROJECT_DIR$/src/MouseUI.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/SideBar.java" />
-        <option value="$PROJECT_DIR$/src/objects/Positionable.java" />
         <option value="$PROJECT_DIR$/src/Painter.java" />
         <option value="$PROJECT_DIR$/src/UI/UIManager.java" />
         <option value="$PROJECT_DIR$/src/UI/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/SimulationManager.java" />
-        <option value="$PROJECT_DIR$/src/objects/MovingCharge.java" />
         <option value="$PROJECT_DIR$/src/UI/Horiz.java" />
         <option value="$PROJECT_DIR$/src/main/Main.java" />
         <option value="$PROJECT_DIR$/src/shapes/Arrow.java" />
@@ -197,21 +210,28 @@
         <option value="$PROJECT_DIR$/src/shapes/Pencil.java" />
         <option value="$PROJECT_DIR$/src/UI/SideBar.java" />
         <option value="$PROJECT_DIR$/src/shapes/InfoIcon.java" />
-        <option value="$PROJECT_DIR$/src/objects/Camera.java" />
         <option value="$PROJECT_DIR$/src/UI/Header.java" />
         <option value="$PROJECT_DIR$/src/UI/UIComponent.java" />
-        <option value="$PROJECT_DIR$/src/UI/Slider.java" />
-        <option value="$PROJECT_DIR$/src/main/UIManager.java" />
-        <option value="$PROJECT_DIR$/src/UI/Checkbox.java" />
         <option value="$PROJECT_DIR$/src/UI/HorizontalLayout.java" />
         <option value="$PROJECT_DIR$/src/math/Conics.java" />
-        <option value="$PROJECT_DIR$/src/UI/ChargeSelector.java" />
-        <option value="$PROJECT_DIR$/src/math/LinAlg.java" />
-        <option value="$PROJECT_DIR$/src/main/Painter.java" />
         <option value="$PROJECT_DIR$/src/shapes/Line3D.java" />
-        <option value="$PROJECT_DIR$/src/shapes/Sphere.java" />
         <option value="$PROJECT_DIR$/src/math/Matrix.java" />
+        <option value="$PROJECT_DIR$/src/objects/Positionable.java" />
+        <option value="$PROJECT_DIR$/src/math/LinAlg.java" />
+        <option value="$PROJECT_DIR$/src/objects/Camera.java" />
+        <option value="$PROJECT_DIR$/src/UI/Checkbox.java" />
+        <option value="$PROJECT_DIR$/src/UI/ChargeSelector.java" />
+        <option value="$PROJECT_DIR$/src/UI/Button.java" />
+        <option value="$PROJECT_DIR$/src/UI/Slider.java" />
+        <option value="$PROJECT_DIR$/src/objects/MovingCharge.java" />
+        <option value="$PROJECT_DIR$/src/main/SimulationManager.java" />
+        <option value="$PROJECT_DIR$/src/shapes/Sphere.java" />
+        <option value="$PROJECT_DIR$/src/main/UIManager.java" />
+        <option value="$PROJECT_DIR$/src/main/Painter.java" />
         <option value="$PROJECT_DIR$/src/UI/MouseUI.java" />
+        <option value="$PROJECT_DIR$/src/editing/ChargeAdder.java" />
+        <option value="$PROJECT_DIR$/src/editing/ChargeSelector.java" />
+        <option value="$PROJECT_DIR$/src/objects/FixedPointCharge.java" />
       </list>
     </option>
   </component>
@@ -229,6 +249,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,6 +262,12 @@
               <item name="Electric-Field-Simulator" type="b2602c69:ProjectViewProjectNode" />
               <item name="Electric-Field-Simulator" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Electric-Field-Simulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Electric-Field-Simulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="editing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Electric-Field-Simulator" type="b2602c69:ProjectViewProjectNode" />
@@ -275,14 +303,17 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554507255490" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="editing" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -335,7 +366,7 @@
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18846412" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19114688" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -364,7 +395,7 @@
       <window_info anchor="right" id="Maven" order="8" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17572099" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19114688" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -373,12 +404,12 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.37623763" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27864215" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32956153" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32956153" />
@@ -390,24 +421,23 @@
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Maven" order="8" />
     </layout-to-restore>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/UIManager.java</url>
+          <line>193</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/TimSort.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="776" selection-start-line="776" selection-end-line="776" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/arrow.png" />
-    <entry file="file://$PROJECT_DIR$/src/objects/FixedPointCharge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="48" column="73" selection-start-line="48" selection-start-column="73" selection-end-line="48" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.desktop/java/awt/Frame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4279">
@@ -441,13 +471,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
           <caret line="178" column="24" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/objects/Positionable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -501,28 +524,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1741">
           <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="18" column="52" lean-forward="true" selection-start-line="18" selection-start-column="52" selection-end-line="18" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#964#965#0" expanded="true" />
-            <element signature="e#1032#1033#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/objects/MovingCharge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="66" column="108" selection-start-line="66" selection-start-column="108" selection-end-line="66" selection-end-column="108" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -636,16 +637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/objects/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="95" column="56" selection-start-line="95" selection-start-column="56" selection-end-line="95" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.desktop/java/awt/Font.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -653,50 +644,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/Checkbox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#405#406#0" expanded="true" />
-            <element signature="e#435#436#0" expanded="true" />
-            <element signature="e#1492#1493#0" expanded="true" />
-            <element signature="e#1526#1527#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/Header.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
           <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/Slider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="27" column="36" lean-forward="true" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="70" column="46" lean-forward="true" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3326#3339#0" expanded="true" />
-            <element signature="e#4229#4230#0" expanded="true" />
-            <element signature="e#4268#4269#0" expanded="true" />
-            <element signature="e#4322#4335#0" expanded="true" />
-            <element signature="e#4882#4883#0" expanded="true" />
-            <element signature="e#4918#4919#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -722,33 +673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="53" column="40" lean-forward="true" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/ChargeSelector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/LinAlg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="103" column="80" selection-start-line="103" selection-start-column="80" selection-end-line="103" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.desktop/java/awt/Color.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -758,42 +682,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/shapes/Line3D.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        <state relative-caret-position="459">
+          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
+    <entry file="file://$PROJECT_DIR$/src/objects/Positionable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="173" column="103" selection-start-line="173" selection-start-column="103" selection-end-line="173" selection-end-column="103" />
-          <folding>
-            <element signature="method#addLineSeg#0;class#Painter#0" />
-            <element signature="e#1149#1485#1" />
-            <element signature="e#1237#1322#1" />
-            <element signature="e#1328#1475#1" />
-            <element signature="method#addGrid#0;class#Painter#0" />
-            <element signature="e#1713#1942#1" />
-            <element signature="method#addBox#0;class#Painter#0" />
-            <element signature="e#2717#3098#1" />
-            <element signature="method#drawTab#0;class#Painter#0" />
-            <element signature="e#3579#3730#1" />
-            <element signature="method#drawOptionsBar#0;class#Painter#0" />
-            <element signature="method#drawSideBar#0;class#Painter#0" />
-            <element signature="e#5492#5635#1" />
-            <element signature="method#init#0;class#Painter#0" />
-            <element signature="method#paintComponent#0;class#Painter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/shapes/Sphere.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="53" column="79" selection-start-line="53" selection-start-column="79" selection-end-line="53" selection-end-column="79" />
+        <state relative-caret-position="170">
+          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -802,21 +702,195 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/math/Matrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2329">
+        <state relative-caret-position="425">
           <caret line="147" column="23" selection-start-line="147" selection-start-column="23" selection-end-line="147" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Conics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="469">
+          <caret line="53" column="40" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/LinAlg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="108" column="45" selection-start-line="108" selection-start-column="45" selection-end-line="108" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.desktop/java/awt/FontMetrics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="98" column="22" selection-start-line="98" selection-start-column="22" selection-end-line="98" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/Checkbox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#558#559#0" expanded="true" />
+            <element signature="e#608#609#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/Slider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="79" column="35" selection-start-line="79" selection-start-column="35" selection-end-line="79" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/Button.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="738" column="23" selection-start-line="738" selection-start-column="23" selection-end-line="738" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/MovingCharge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-357">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editing/ChargeAdder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="55" column="25" selection-start-line="55" selection-start-column="25" selection-end-line="55" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/UIManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="173" column="64" selection-start-line="173" selection-start-column="64" selection-end-line="173" selection-end-column="64" />
+          <folding>
+            <element signature="class#3264:3371" />
+            <element signature="e#5748#5749#0" expanded="true" />
+            <element signature="e#5803#5804#0" expanded="true" />
+            <element signature="e#5945#5946#0" expanded="true" />
+            <element signature="e#6003#6004#0" expanded="true" />
+            <element signature="method#generateComponents#0;class#UIManager#0" />
+            <element signature="method#createInfoUI#0;class#UIManager#0" />
+            <element signature="e#4467#4480#0" expanded="true" />
+            <element signature="e#8913#8914#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/MouseUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="111" column="44" lean-forward="true" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
+        <state relative-caret-position="309">
+          <caret line="163" column="38" lean-forward="true" selection-start-line="163" selection-start-column="38" selection-end-line="163" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#6718#6719#0" expanded="true" />
-            <element signature="e#6746#6747#0" expanded="true" />
-            <element signature="e#6805#6806#0" expanded="true" />
-            <element signature="e#6838#6839#0" expanded="true" />
+            <element signature="e#5678#5679#0" expanded="true" />
+            <element signature="e#5723#5724#0" expanded="true" />
+            <element signature="method#mouseWheelMoved#0;class#MouseUI#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editing/ChargeSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="58" column="28" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/SimulationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="71" column="23" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2528#2529#0" expanded="true" />
+            <element signature="e#2563#2564#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/Painter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="174" column="38" lean-forward="true" selection-start-line="174" selection-start-column="38" selection-end-line="174" selection-end-column="38" />
+          <folding>
+            <element signature="method#addLineSeg#0;class#Painter#0" />
+            <element signature="method#addGrid#0;class#Painter#0" />
+            <element signature="method#addBox#0;class#Painter#0" />
+            <element signature="method#drawTab#0;class#Painter#0" />
+            <element signature="method#drawOptionsBar#0;class#Painter#0" />
+            <element signature="method#init#0;class#Painter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shapes/Sphere.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/FixedPointCharge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1186#1187#0" expanded="true" />
+            <element signature="e#1215#1216#0" expanded="true" />
+            <element signature="e#1127#1128#0" expanded="true" />
+            <element signature="e#1163#1164#0" expanded="true" />
           </folding>
         </state>
       </provider>
