@@ -3,6 +3,7 @@ package math;
 import objects.Camera;
 import objects.Positionable;
 import shapes.Line3D;
+import shapes.Triangle3D;
 
 import java.awt.*;
 
@@ -90,10 +91,12 @@ public class LinAlg {
 
     public static class LineSeg implements Positionable {
         public Matrix pnt1, pnt2;
+        public Color c;
 
-        public LineSeg(Matrix _p1, Matrix _p2) {
+        public LineSeg(Matrix _p1, Matrix _p2, Color _c) {
             pnt1 = _p1;
             pnt2 = _p2;
+            c = _c;
         }
 
         public Line getLine() {
@@ -106,13 +109,43 @@ public class LinAlg {
 
         @Override
         public void draw(Graphics2D g) {
-            Line3D.draw(g, LineSeg.mult(this, Camera.getTransformationMatrix()), Color.WHITE);
+            Line3D.draw(g, LineSeg.mult(this, Camera.getTransformationMatrix()), c);
         }
 
         public static LineSeg mult(LineSeg ls, Matrix m) {
-            return new LineSeg(Matrix.mult(ls.pnt1, m), Matrix.mult(ls.pnt2, m));
+            return new LineSeg(Matrix.mult(ls.pnt1, m), Matrix.mult(ls.pnt2, m), ls.c);
         }
 
+    }
+
+    public static class Triangle implements Positionable {
+
+        public Matrix p1, p2, p3;
+        public Color c;
+
+        public Triangle(Matrix _p1, Matrix _p2, Matrix _p3, Color _c) {
+            p1 = _p1;
+            p2 = _p2;
+            p3 = _p3;
+            c = _c;
+        }
+
+        public double getDisTo(Matrix m) {
+            return getDis(m, centroid());
+        }
+
+        @Override
+        public void draw(Graphics2D g) {
+            Triangle3D.draw(g, Triangle.mult(this, Camera.getTransformationMatrix()), c);
+        }
+
+        public static Triangle mult(Triangle t, Matrix m) {
+            return new Triangle(Matrix.mult(t.p1, m), Matrix.mult(t.p2, m), Matrix.mult(t.p3, m), t.c);
+        }
+
+        public Matrix centroid() {
+            return Matrix.scale(Matrix.add(Matrix.add(p1, p2), p3), 1.0 / 3);
+        }
     }
 
     public static class Plane {

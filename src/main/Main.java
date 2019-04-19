@@ -1,7 +1,6 @@
 package main;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,9 +19,6 @@ public class Main {
 
     private static void render() {
         WindowManager.update();
-    }
-
-    private static void cleanUp() {
     }
 
     public static void main(String[] args) {
@@ -49,9 +45,7 @@ public class Main {
                 nextGameTick += SKIP_TICKS;
                 loops++;
             }
-            //render();
         }
-        cleanUp();
         System.exit(0);
     }
 

@@ -1,14 +1,19 @@
 package main;
 
 import UI.SideBar;
+import UI.Slider;
 import UI.UIComponent;
 import editing.ChargeSelector;
+import math.LinAlg;
 import math.Matrix;
 import objects.Camera;
 import objects.FixedPointCharge;
 import objects.MovingCharge;
 import objects.Positionable;
-import shapes.*;
+import shapes.Gear;
+import shapes.InfoIcon;
+import shapes.Pencil;
+import shapes.TabArrow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +30,14 @@ public class Painter extends JPanel {
     public static final int MIN_BRIGHTNESS = 100000;
     public static final int MAX_BRIGHTNESS = 1000000;
 
+    public static final int NUM_ARROWS = 7;
+    public static final double ARROW_HEIGHT = 0.5;
+
     private static final double MAX_LINE_SEG_LENGTH = 2;
 
     private static final double GRID_STEP = 5;
+    private static final Color SLIDER_LINE_COLOR = new Color(255, 255, 0);
+    private static final Color BASE_COLOR = new Color(200, 200, 0);
 
     public double maxDim;
 
@@ -41,17 +51,17 @@ public class Painter extends JPanel {
         return super.getHeight();
     }
 
-    void addLineSeg(Matrix p1, Matrix p2, PriorityQueue<Positionable> pq) {
+    void addLineSeg(Matrix p1, Matrix p2, Color c, PriorityQueue<Positionable> pq) {
         Matrix curr = new Matrix(p1);
         Matrix unit = Matrix.scale(Matrix.normalize(Matrix.subtract(p2, p1)), MAX_LINE_SEG_LENGTH);
         while (true) {
             double dis = getDis(curr, p2);
             if (dis < MAX_LINE_SEG_LENGTH) {
-                pq.add(new LineSeg(curr, p2));
+                pq.add(new LineSeg(curr, p2, c));
                 break;
             } else {
                 Matrix next = Matrix.add(curr, unit);
-                pq.add(new LineSeg(curr, next));
+                pq.add(new LineSeg(curr, next, c));
                 curr = next;
             }
         }
@@ -61,15 +71,17 @@ public class Painter extends JPanel {
         double gs = UIManager.gridSizeSlider.getVal();
         double mx = GRID_STEP * Math.floor(gs / GRID_STEP);
         for (double i = -mx; i <= mx; i += GRID_STEP) {
-            addLineSeg(new Matrix(new double[][]{{i, -gs, 0}}), new Matrix(new double[][]{{i, gs, 0}}), pq);
-            addLineSeg(new Matrix(new double[][]{{-gs, i, 0}}), new Matrix(new double[][]{{gs, i, 0}}), pq);
+            addLineSeg(new Matrix(new double[][]{{i, -gs, 0}}), new Matrix(new double[][]{{i, gs, 0}}), Color.WHITE, pq);
+            addLineSeg(new Matrix(new double[][]{{-gs, i, 0}}), new Matrix(new double[][]{{gs, i, 0}}), Color.WHITE, pq);
         }
         if (mx != gs)
-            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{-gs, gs, 0}}), pq);
-        if (mx != gs) addLineSeg(new Matrix(new double[][]{{gs, -gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), pq);
-        if (mx != gs) addLineSeg(new Matrix(new double[][]{{-gs, gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), pq);
+            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{-gs, gs, 0}}), Color.WHITE, pq);
         if (mx != gs)
-            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{gs, -gs, 0}}), pq);
+            addLineSeg(new Matrix(new double[][]{{gs, -gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), Color.WHITE, pq);
+        if (mx != gs)
+            addLineSeg(new Matrix(new double[][]{{-gs, gs, 0}}), new Matrix(new double[][]{{gs, gs, 0}}), Color.WHITE, pq);
+        if (mx != gs)
+            addLineSeg(new Matrix(new double[][]{{-gs, -gs, 0}}), new Matrix(new double[][]{{gs, -gs, 0}}), Color.WHITE, pq);
     }
 
     void addBox(PriorityQueue<Positionable> pq) {
@@ -83,7 +95,7 @@ public class Painter extends JPanel {
                     Matrix p2 = new Matrix(new double[][]{{a, b, gs}});
                     p2.set(0, 2, p2.get(0, i));
                     p2.set(0, i, gs);
-                    addLineSeg(p1, p2, pq);
+                    addLineSeg(p1, p2, Color.WHITE, pq);
                 }
     }
 
@@ -144,6 +156,49 @@ public class Painter extends JPanel {
         g.setClip(0, 0, getWidth(), getHeight());
     }
 
+    private void addArrow(Matrix pos, int dir, PriorityQueue<Positionable> pq) {
+        int[][] d = {{-1, 1, 1, -1}, {1, 1, -1, -1}};
+        Matrix[] base = new Matrix[4];
+        for (int i = 0; i < 4; i++) {
+            base[i] = new Matrix(pos);
+            base[i].set(0, dir, base[i].get(0, dir) - ARROW_HEIGHT / 2);
+            for (int j = 0; j < 2; j++)
+                base[i].set(0, (dir + 1 + j) % 3, base[i].get(0, (dir + 1 + j) % 3) + d[j][i] * ARROW_HEIGHT / 2);
+        }
+        Matrix pnt = new Matrix(pos);
+        pnt.set(0, dir, pnt.get(0, dir) + ARROW_HEIGHT / 2);
+        pq.add(new LinAlg.Triangle(base[0], base[1], base[2], BASE_COLOR));
+        pq.add(new LinAlg.Triangle(base[0], base[2], base[3], BASE_COLOR));
+        for (int i = 0; i < 4; i++) pq.add(new LinAlg.Triangle(base[i], base[(i + 1) % 4], pnt, SLIDER_LINE_COLOR));
+    }
+
+    private boolean addSliderLines(PriorityQueue<Positionable> pq) {
+        if (ChargeSelector.selectedCharge != null) {
+            Matrix pos = ChargeSelector.selectedCharge.getPos();
+            if (WindowManager.mouseUI.onSlider || WindowManager.mouseUI.downSlider) {
+                Slider[] sliders = {UIManager.xPosSlider, UIManager.yPosSlider, UIManager.zPosSlider};
+                for (int i = 0; i < 3; i++)
+                    if (WindowManager.mouseUI.currentSlider == sliders[i]) {
+                        Matrix p1 = new Matrix(pos);
+                        Matrix p2 = new Matrix(pos);
+                        p1.set(0, i, -SimulationManager.MAX_GRID_SIZE);
+                        p2.set(0, i, SimulationManager.MAX_GRID_SIZE);
+                        addLineSeg(p1, p2, SLIDER_LINE_COLOR, pq);
+
+                        double spacing = 2 * SimulationManager.MAX_GRID_SIZE / (NUM_ARROWS - 1);
+                        for (int j = 0; j < NUM_ARROWS; j++) {
+                            double v = -SimulationManager.MAX_GRID_SIZE + j * spacing;
+                            Matrix p = new Matrix(pos);
+                            p.set(0, i, v);
+                            addArrow(p, i, pq);
+                        }
+                        return true;
+                    }
+            }
+        }
+        return false;
+    }
+
     private void drawSimulation() {
         AffineTransform at = g.getTransform();
         g.translate((double) getWidth() / 2, (double) getHeight() / 2);
@@ -158,8 +213,9 @@ public class Painter extends JPanel {
                 return (int) Math.signum(o2.getDisTo(Camera.getPos()) - o1.getDisTo(Camera.getPos()));
             }
         });
-        if (UIManager.gridCheckbox.isChecked()) addGrid(pq);
-        if (UIManager.boxCheckbox.isChecked()) addBox(pq);
+        boolean addedLines = addSliderLines(pq);
+        if (!addedLines && UIManager.gridCheckbox.isChecked()) addGrid(pq);
+        if (!addedLines && UIManager.boxCheckbox.isChecked()) addBox(pq);
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges()) pq.add(fpc);
         for (MovingCharge mc : SimulationManager.getMovingCharges()) pq.add(mc);
         while (!pq.isEmpty()) {
@@ -185,7 +241,7 @@ public class Painter extends JPanel {
         init(_g);
         drawSimulation();
         drawSideBar();
-        if(ChargeSelector.editing) drawEditUI();
+        if (ChargeSelector.editing) drawEditUI();
     }
 
 }

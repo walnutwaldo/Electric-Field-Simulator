@@ -69,17 +69,17 @@ public class FixedPointCharge implements Positionable {
         Color c = Color.WHITE;
         if (ChargeSelector.editing) {
             double v = 1 - Math.abs(getCharge()) / (MAX_CHARGE);
-            if (getCharge() > 0) c = new Color(255, (int) (256 * v), (int) (256 * v));
-            else c = new Color((int) (256 * v), (int) (256 * v), 255);
+            if (getCharge() > 0) c = new Color(255, (int) (255 * v), (int) (255 * v));
+            else c = new Color((int) (255 * v), (int) (255 * v), 255);
         }
         Sphere.fill(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, c);
-        if (ChargeSelector.currCharge == this) {
+        if (ChargeSelector.currCharge == this)
             if (ChargeSelector.on) {
                 if (ChargeSelector.down)
                     Sphere.fill(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, new Color(100, 240, 100));
-                else Sphere.fill(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, new Color(110, 250, 110));
+                else
+                    Sphere.fill(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, new Color(110, 250, 110));
             }
-        }
         if (ChargeSelector.selectedCharge == this)
             Sphere.draw(g, Matrix.mult(getPos(), Camera.getTransformationMatrix()), FixedPointCharge.RADIUS, new Color(0, 255, 0));
     }

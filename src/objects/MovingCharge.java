@@ -65,7 +65,7 @@ public class MovingCharge implements Positionable {
         Matrix newPos = Matrix.add(pos, Matrix.scale(velocity, getSpeed() * dt));
 
         for (FixedPointCharge fpc : SimulationManager.getFixedCharges())
-            if (getDis(fpc.getPos(), new LineSeg(pos, newPos)) < MIN_DIS)
+            if (getDis(fpc.getPos(), new LineSeg(pos, newPos, null)) < MIN_DIS)
                 finished = true;
         for (int dim = 0; dim < 3; dim++)
             if (Math.abs(newPos.get(0, dim)) > UIManager.gridSizeSlider.getVal()) finished = true;

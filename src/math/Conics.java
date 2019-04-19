@@ -1,5 +1,7 @@
 package math;
 
+import shapes.Line3D;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -60,6 +62,7 @@ public class Conics {
         double h = ellipseData.get(0, 3);
         double k = ellipseData.get(0, 4);
         g.rotate(theta, 0, 0);
+        g.setStroke(new BasicStroke(Line3D.LINE_THICKNESS));
         g.draw(new Ellipse2D.Double(h - a, k - b, 2 * a, 2 * b));
         g.setTransform(at);
     }

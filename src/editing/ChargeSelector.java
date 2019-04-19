@@ -45,7 +45,7 @@ public class ChargeSelector {
         FixedPointCharge fpc = getFPC(e);
         if (!down) {
             currCharge = fpc;
-            on = (fpc != null);
+            on = (fpc != null && fpc != selectedCharge);
         } else
             on = (fpc == currCharge);
     }
@@ -71,12 +71,8 @@ public class ChargeSelector {
         updateCharge(e);
         if (down) {
             down = false;
-            if (getFPC(e) == currCharge) {
-                if (selectedCharge == currCharge) selectedCharge = null;
-                else {
-                    selectCharge(currCharge);
-                }
-            }
+            if (getFPC(e) == currCharge)
+                selectCharge(currCharge);
         }
     }
 
