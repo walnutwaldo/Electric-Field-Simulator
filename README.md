@@ -1,2 +1,3 @@
 # Electric-Field-Simulator
-This is what I made for my create task for AP Computer Science Principles (2019).
+This was made in part for the create task of the AP Computer Science Principles course (2019).
+This project allows you to place eletrical point charges in 3D space and it simulates particles traveling along the electric field.
